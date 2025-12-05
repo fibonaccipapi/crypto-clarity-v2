@@ -7,10 +7,10 @@ export function BottomNav() {
   const pathname = usePathname();
 
   const navItems = [
-    { route: '/', icon: '🏠', label: 'Home', isImage: false },
-    { route: '/learn', icon: '📚', label: 'Learn', isImage: false },
-    { route: '/quiz', icon: '❓', label: 'Quiz', isImage: false },
-    { route: '/flashcards', icon: '🎮', label: 'Games', isImage: false },
+    { route: '/', icon: '🏠', label: 'Home', isImage: false, useGradientBorder: true },
+    { route: '/learn', icon: require('../../assets/images/learn-icon.png'), label: 'Learn', isImage: true },
+    { route: '/quiz', icon: require('../../assets/images/quiz-icon.png'), label: 'Quiz', isImage: true },
+    { route: '/flashcards', icon: require('../../assets/images/games-icon.png'), label: 'Games', isImage: true },
     { route: '/profile', icon: require('../../assets/images/profile-icon.png'), label: 'Profile', isImage: true },
   ];
 
@@ -33,16 +33,35 @@ export function BottomNav() {
               >
                 {item.isImage ? (
                   <LinearGradient
-                    colors={['#00FF33', '#00AA22', '#006611']}
+                    colors={isActive
+                      ? (item.label === 'Learn' || item.label === 'Games' ? ['#FF6BCB', '#CC5699', '#993366'] : ['#00FF33', '#00AA22', '#006611'])
+                      : ['#333', '#222', '#111']
+                    }
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={styles.iconImageBorder}
                   >
                     <Image
                       source={item.icon}
-                      style={styles.iconImage}
+                      style={[styles.iconImage, !isActive && { opacity: 0.4 }]}
                       resizeMode="cover"
                     />
+                  </LinearGradient>
+                ) : item.useGradientBorder ? (
+                  <LinearGradient
+                    colors={isActive ? ['#00FF33', '#00AA22', '#006611'] : ['#333', '#222', '#111']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.iconImageBorder}
+                  >
+                    <View style={styles.emojiContainer}>
+                      <Text style={[
+                        styles.iconText,
+                        { opacity: isActive ? 1 : 0.4 }
+                      ]}>
+                        {item.icon}
+                      </Text>
+                    </View>
                   </LinearGradient>
                 ) : (
                   <View style={[
@@ -113,5 +132,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 14,
+  },
+  emojiContainer: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 14,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

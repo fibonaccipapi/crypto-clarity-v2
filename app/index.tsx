@@ -186,9 +186,13 @@ export default function HomeScreen() {
                 colors={['rgba(0, 255, 51, 0.8)', 'rgba(0, 255, 51, 0.4)', 'rgba(0, 255, 51, 0.1)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={styles.iconButton}
+                style={styles.learnIconBorder}
               >
-                <Text style={styles.iconEmoji}>📚</Text>
+                <Image
+                  source={require('../assets/images/learn-icon.png')}
+                  style={styles.learnIconImage}
+                  resizeMode="cover"
+                />
               </LinearGradient>
               <Text style={styles.iconLabel}>Learn</Text>
               <Text style={styles.iconSubtitle}>7 Categories</Text>
@@ -201,9 +205,13 @@ export default function HomeScreen() {
                 colors={['rgba(255, 107, 203, 0.8)', 'rgba(255, 107, 203, 0.4)', 'rgba(255, 107, 203, 0.1)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={styles.iconButton}
+                style={styles.quizIconBorder}
               >
-                <Text style={styles.iconEmoji}>❓</Text>
+                <Image
+                  source={require('../assets/images/quiz-icon.png')}
+                  style={styles.quizIconImage}
+                  resizeMode="cover"
+                />
               </LinearGradient>
               <Text style={styles.iconLabel}>Quiz</Text>
               <Text style={styles.iconSubtitle}>Test Skills</Text>
@@ -216,9 +224,13 @@ export default function HomeScreen() {
                 colors={['rgba(0, 255, 51, 0.8)', 'rgba(0, 255, 51, 0.4)', 'rgba(0, 255, 51, 0.1)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={styles.iconButton}
+                style={styles.gamesIconBorder}
               >
-                <Text style={styles.iconEmoji}>🎮</Text>
+                <Image
+                  source={require('../assets/images/games-icon.png')}
+                  style={styles.gamesIconImage}
+                  resizeMode="cover"
+                />
               </LinearGradient>
               <Text style={styles.iconLabel}>Games</Text>
               <Text style={styles.iconSubtitle}>Play & Learn</Text>
@@ -228,7 +240,7 @@ export default function HomeScreen() {
           <Link href="/profile" asChild>
             <TouchableOpacity style={styles.gridItem}>
               <LinearGradient
-                colors={['#66FF99', '#33FF66', '#00FF33']}
+                colors={['rgba(255, 107, 203, 0.8)', 'rgba(255, 107, 203, 0.4)', 'rgba(255, 107, 203, 0.1)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.profileIconBorder}
@@ -414,6 +426,42 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   profileIconImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 27,
+  },
+  gamesIconBorder: {
+    width: 120,
+    height: 120,
+    borderRadius: 30,
+    padding: 3,
+    marginBottom: 12,
+  },
+  gamesIconImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 27,
+  },
+  learnIconBorder: {
+    width: 120,
+    height: 120,
+    borderRadius: 30,
+    padding: 3,
+    marginBottom: 12,
+  },
+  learnIconImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 27,
+  },
+  quizIconBorder: {
+    width: 120,
+    height: 120,
+    borderRadius: 30,
+    padding: 3,
+    marginBottom: 12,
+  },
+  quizIconImage: {
     width: '100%',
     height: '100%',
     borderRadius: 27,
