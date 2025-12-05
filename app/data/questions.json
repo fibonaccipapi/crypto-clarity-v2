@@ -50,7 +50,7 @@
     {
       "id": 2,
       "title": "Crypto Concepts",
-      "icon": "💎",
+      "icon": "logo",
       "questions": [
         {
           "question": "What was the first cryptocurrency?",

@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import lessonsData from './data/lessons.json';
+
+const logoIcon = require('../assets/images/logo.png');
 
 const GlassCard = ({ children, glowColor = 'green', style }: any) => {
   return (
@@ -38,7 +40,7 @@ const Badge = ({ text, variant = 'green' }: any) => {
   );
 };
 
-const IconContainer = ({ emoji, size = 'medium', glowColor = 'green' }: any) => {
+const IconContainer = ({ icon, size = 'medium', glowColor = 'green' }: any) => {
   const sizes: any = {
     small: 48,
     medium: 64,
@@ -51,13 +53,23 @@ const IconContainer = ({ emoji, size = 'medium', glowColor = 'green' }: any) => 
     purple: '#A855F7',
   };
 
+  const isImage = icon && typeof icon !== 'string';
+
   return (
     <View style={[styles.iconContainer, {
       width: sizes[size],
       height: sizes[size],
       borderColor: colors[glowColor],
     }]}>
-      <Text style={styles.iconEmoji}>{emoji}</Text>
+      {isImage ? (
+        <Image
+          source={icon}
+          style={[styles.iconImage, { width: sizes[size] * 0.7, height: sizes[size] * 0.7 }]}
+          resizeMode="contain"
+        />
+      ) : (
+        <Text style={styles.iconEmoji}>{icon}</Text>
+      )}
     </View>
   );
 };
@@ -69,49 +81,49 @@ export default function Learn() {
     { 
       id: 'blockchain', 
       title: 'Blockchain Basics', 
-      emoji: '⛓️',
+      icon: '⛓️',
       color: 'green' as const,
       description: 'Understanding the foundation'
     },
     { 
       id: 'cryptocurrency', 
       title: 'Cryptocurrency', 
-      emoji: '💎',
+      icon: logoIcon,
       color: 'pink' as const,
       description: 'Digital money explained'
     },
     { 
       id: 'defi', 
       title: 'DeFi', 
-      emoji: '🏦',
+      icon: '🏦',
       color: 'purple' as const,
       description: 'Decentralized finance'
     },
     { 
       id: 'nft', 
       title: 'NFTs', 
-      emoji: '🎨',
+      icon: '🎨',
       color: 'pink' as const,
       description: 'Digital ownership'
     },
     { 
       id: 'trading', 
       title: 'Trading', 
-      emoji: '📈',
+      icon: '📈',
       color: 'green' as const,
       description: 'Markets & strategies'
     },
     { 
       id: 'security', 
       title: 'Security', 
-      emoji: '🔒',
+      icon: '🔒',
       color: 'purple' as const,
       description: 'Protecting your assets'
     },
     { 
       id: 'future', 
       title: 'Future Trends', 
-      emoji: '🚀',
+      icon: '🚀',
       color: 'pink' as const,
       description: 'What\'s coming next'
     },
@@ -137,7 +149,7 @@ export default function Learn() {
               <View key={category.id} style={styles.categorySection}>
                 <View style={styles.categorySectionHeader}>
                   <IconContainer 
-                    emoji={category.emoji}
+                    icon={category.icon}
                     size="medium" 
                     glowColor={category.color}
                   />
@@ -271,6 +283,10 @@ const styles = StyleSheet.create({
   },
   iconEmoji: {
     fontSize: 36,
+  },
+  iconImage: {
+    width: 36,
+    height: 36,
   },
   badge: {
     paddingHorizontal: 12,

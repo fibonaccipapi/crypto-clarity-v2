@@ -7,7 +7,7 @@ export function BottomNav() {
   const pathname = usePathname();
 
   const navItems = [
-    { route: '/', icon: '🏠', label: 'Home', isImage: false, useGradientBorder: true },
+    { route: '/', icon: require('../../assets/images/Home-icon.png'), label: 'Home', isImage: true, size: 60 },
     { route: '/learn', icon: require('../../assets/images/learn-icon.png'), label: 'Learn', isImage: true },
     { route: '/quiz', icon: require('../../assets/images/quiz-icon.png'), label: 'Quiz', isImage: true },
     { route: '/flashcards', icon: require('../../assets/images/games-icon.png'), label: 'Games', isImage: true },
@@ -24,6 +24,8 @@ export function BottomNav() {
           {navItems.map((item, index) => {
             const isActive = pathname === item.route;
             const color = index % 2 === 0 ? '#00FF33' : '#FF6BCB';
+            const size = item.size || 56;
+            const borderRadius = size / 3.5;
 
             return (
               <TouchableOpacity
@@ -39,11 +41,18 @@ export function BottomNav() {
                     }
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
-                    style={styles.iconImageBorder}
+                    style={[
+                      styles.iconImageBorder,
+                      { width: size, height: size, borderRadius }
+                    ]}
                   >
                     <Image
                       source={item.icon}
-                      style={[styles.iconImage, !isActive && { opacity: 0.4 }]}
+                      style={[
+                        styles.iconImage,
+                        { borderRadius: borderRadius - 2 },
+                        !isActive && { opacity: 0.4 }
+                      ]}
                       resizeMode="cover"
                     />
                   </LinearGradient>
@@ -52,9 +61,15 @@ export function BottomNav() {
                     colors={isActive ? ['#00FF33', '#00AA22', '#006611'] : ['#333', '#222', '#111']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
-                    style={styles.iconImageBorder}
+                    style={[
+                      styles.iconImageBorder,
+                      { width: size, height: size, borderRadius }
+                    ]}
                   >
-                    <View style={styles.emojiContainer}>
+                    <View style={[
+                      styles.emojiContainer,
+                      { borderRadius: borderRadius - 2 }
+                    ]}>
                       <Text style={[
                         styles.iconText,
                         { opacity: isActive ? 1 : 0.4 }

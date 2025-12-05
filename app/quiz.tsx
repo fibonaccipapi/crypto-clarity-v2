@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useWallet } from './contexts/WalletContext';
 import quizData from './data/questions.json';
+
+const logoIcon = require('../assets/images/logo.png');
 
 const GlassCard = ({ children, style }: any) => {
   return (
@@ -50,6 +52,30 @@ export default function Quiz() {
 
   const categories = quizData.categories || [];
   const currentQuestion = selectedCategory?.questions[currentQuestionIndex];
+
+  const renderCategoryIcon = (icon: string | number) => {
+    if (icon === 'logo') {
+      return (
+        <Image
+          source={logoIcon}
+          style={styles.categoryIconImage}
+          resizeMode="contain"
+        />
+      );
+    }
+
+    if (typeof icon !== 'string') {
+      return (
+        <Image
+          source={icon}
+          style={styles.categoryIconImage}
+          resizeMode="contain"
+        />
+      );
+    }
+
+    return <Text style={styles.categoryEmoji}>{icon}</Text>;
+  };
 
   const handleAnswer = (answer: string) => {
     setSelectedAnswer(answer);
@@ -103,7 +129,7 @@ export default function Quiz() {
               >
                 <GlassCard>
                   <View style={styles.categoryCardContent}>
-                    <Text style={styles.categoryEmoji}>{category.icon}</Text>
+                    {renderCategoryIcon(category.icon)}
                     <Text style={styles.categoryTitle}>{category.title}</Text>
                     <Badge 
                       text={`${category.questions.length} QUESTIONS`} 
@@ -279,6 +305,10 @@ const styles = StyleSheet.create({
   },
   categoryEmoji: {
     fontSize: 48,
+  },
+  categoryIconImage: {
+    width: 64,
+    height: 64,
   },
   categoryTitle: {
     fontSize: 24,

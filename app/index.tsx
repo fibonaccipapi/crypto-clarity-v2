@@ -147,7 +147,11 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <View style={styles.logoCircle}>
-            <Text style={styles.logoEmoji}>💎</Text>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
           </View>
           
           <View style={styles.headerTextContainer}>
@@ -305,8 +309,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'rgba(255, 255, 255, 0.3)',
   },
-  logoEmoji: {
-    fontSize: 40,
+  logoImage: {
+    width: 44,
+    height: 44,
   },
   headerTextContainer: {
     flex: 1,
@@ -337,8 +342,6 @@ const styles = StyleSheet.create({
   },
   glassCardBase: {
     borderRadius: 24,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.4)',
     overflow: 'hidden',
     position: 'relative',
   },
@@ -362,7 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 255, 51, 0.2)',
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 12,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: 'rgba(0, 255, 51, 0.5)',
   },
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(168, 85, 247, 0.2)',
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 12,
+    borderRadius: 999,
     borderWidth: 1,
     borderColor: 'rgba(168, 85, 247, 0.5)',
   },
