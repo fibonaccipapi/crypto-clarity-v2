@@ -1,0 +1,164 @@
+{
+  "flashcards": [
+    {
+      "term": "Blockchain",
+      "definition": "A distributed digital ledger"
+    },
+    {
+      "term": "Bitcoin",
+      "definition": "First cryptocurrency created in 2009"
+    },
+    {
+      "term": "Ethereum",
+      "definition": "Platform for smart contracts and dApps"
+    },
+    {
+      "term": "NFT",
+      "definition": "Non-Fungible Token - unique digital item"
+    },
+    {
+      "term": "DeFi",
+      "definition": "Decentralized Finance - financial services without banks"
+    },
+    {
+      "term": "Wallet",
+      "definition": "Digital tool for storing private keys"
+    },
+    {
+      "term": "Private Key",
+      "definition": "Secret code that controls your crypto"
+    },
+    {
+      "term": "Public Key",
+      "definition": "Address others use to send you crypto"
+    },
+    {
+      "term": "Mining",
+      "definition": "Process of validating transactions and creating new coins"
+    },
+    {
+      "term": "Staking",
+      "definition": "Locking crypto to help secure network and earn rewards"
+    },
+    {
+      "term": "Smart Contract",
+      "definition": "Self-executing code on blockchain"
+    },
+    {
+      "term": "Gas Fee",
+      "definition": "Cost to process transactions on blockchain"
+    },
+    {
+      "term": "Altcoin",
+      "definition": "Any cryptocurrency other than Bitcoin"
+    },
+    {
+      "term": "HODL",
+      "definition": "Hold cryptocurrency long-term"
+    },
+    {
+      "term": "FOMO",
+      "definition": "Fear Of Missing Out on price increases"
+    },
+    {
+      "term": "FUD",
+      "definition": "Fear, Uncertainty, and Doubt"
+    },
+    {
+      "term": "DEX",
+      "definition": "Decentralized Exchange"
+    },
+    {
+      "term": "CEX",
+      "definition": "Centralized Exchange"
+    },
+    {
+      "term": "Liquidity Pool",
+      "definition": "Tokens locked in smart contract for trading"
+    },
+    {
+      "term": "Yield Farming",
+      "definition": "Earning rewards by providing liquidity"
+    },
+    {
+      "term": "Bull Market",
+      "definition": "Period of rising prices"
+    },
+    {
+      "term": "Bear Market",
+      "definition": "Period of falling prices"
+    },
+    {
+      "term": "Whale",
+      "definition": "Large holder who can influence prices"
+    },
+    {
+      "term": "Rug Pull",
+      "definition": "Scam where developers abandon project"
+    },
+    {
+      "term": "Moon",
+      "definition": "Cryptocurrency price going very high"
+    },
+    {
+      "term": "Satoshi",
+      "definition": "Smallest unit of Bitcoin (0.00000001 BTC)"
+    },
+    {
+      "term": "Hash Rate",
+      "definition": "Computing power used in mining"
+    },
+    {
+      "term": "Proof of Work",
+      "definition": "Consensus mechanism using computational power"
+    },
+    {
+      "term": "Proof of Stake",
+      "definition": "Consensus mechanism using staked coins"
+    },
+    {
+      "term": "Cold Wallet",
+      "definition": "Offline storage for cryptocurrency"
+    },
+    {
+      "term": "Hot Wallet",
+      "definition": "Online wallet connected to internet"
+    },
+    {
+      "term": "Seed Phrase",
+      "definition": "12-24 words to recover your wallet"
+    },
+    {
+      "term": "2FA",
+      "definition": "Two-Factor Authentication for security"
+    },
+    {
+      "term": "KYC",
+      "definition": "Know Your Customer - identity verification"
+    },
+    {
+      "term": "Whitepaper",
+      "definition": "Document explaining a crypto project"
+    },
+    {
+      "term": "Market Cap",
+      "definition": "Total value of all coins in circulation"
+    },
+    {
+      "term": "ATH",
+      "definition": "All-Time High price"
+    },
+    {
+      "term": "ATL",
+      "definition": "All-Time Low price"
+    },
+    {
+      "term": "Airdrop",
+      "definition": "Free distribution of tokens"
+    },
+    {
+      "term": "Token",
+      "definition": "Digital asset built on existing blockchain"
+    }
+  ]
+}

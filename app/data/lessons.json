@@ -1,0 +1,264 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "category": "blockchain",
+      "title": "What is Blockchain?",
+      "emoji": "⛓️",
+      "difficulty": "beginner",
+      "content": "A blockchain is a distributed digital ledger that records transactions across many computers. Think of it like a notebook that everyone can read, but no one can erase or change what's already written.\n\nKey characteristics:\n• Decentralized - No single entity controls it\n• Transparent - All transactions are visible\n• Immutable - Once recorded, data cannot be altered\n• Secure - Uses cryptography to protect data",
+      "keyTakeaways": [
+        "Blockchain is a digital ledger distributed across many computers",
+        "Data on blockchain is transparent and cannot be changed",
+        "No central authority controls the blockchain"
+      ]
+    },
+    {
+      "id": 2,
+      "category": "blockchain",
+      "title": "Understanding Decentralization",
+      "emoji": "🌐",
+      "difficulty": "beginner",
+      "content": "Decentralization means spreading power and control across many people instead of one central authority. In traditional systems, banks control your money. In crypto, you control it yourself.\n\nBenefits of decentralization:\n• No single point of failure\n• Resistant to censorship\n• Greater privacy and control\n• Lower fees (no middleman)\n• 24/7 availability",
+      "keyTakeaways": [
+        "Decentralization removes the need for intermediaries",
+        "You have full control over your assets",
+        "More resistant to censorship and shutdowns"
+      ]
+    },
+    {
+      "id": 3,
+      "category": "cryptocurrency",
+      "title": "What is Bitcoin?",
+      "emoji": "₿",
+      "difficulty": "beginner",
+      "content": "Bitcoin is the first and most well-known cryptocurrency, created in 2009 by an anonymous person (or group) known as Satoshi Nakamoto. It's often called 'digital gold' because of its limited supply.\n\nKey facts:\n• Maximum supply: 21 million coins\n• Used for peer-to-peer transactions\n• Secured by proof-of-work mining\n• Decentralized and borderless",
+      "keyTakeaways": [
+        "Bitcoin was the first cryptocurrency",
+        "Limited to 21 million coins total",
+        "Operates without banks or governments"
+      ]
+    },
+    {
+      "id": 4,
+      "category": "cryptocurrency",
+      "title": "What is Ethereum?",
+      "emoji": "⟠",
+      "difficulty": "beginner",
+      "content": "Ethereum is a blockchain platform that enables smart contracts and decentralized applications (dApps). While Bitcoin is digital money, Ethereum is a programmable blockchain.\n\nKey features:\n• Smart contracts - Self-executing code\n• dApps - Decentralized applications\n• NFT marketplace foundation\n• DeFi platform base\n• ETH cryptocurrency for transactions",
+      "keyTakeaways": [
+        "Ethereum enables smart contracts and dApps",
+        "More versatile than Bitcoin",
+        "Powers most NFTs and DeFi applications"
+      ]
+    },
+    {
+      "id": 5,
+      "category": "cryptocurrency",
+      "title": "Understanding Altcoins",
+      "emoji": "🪙",
+      "difficulty": "beginner",
+      "content": "Altcoins are any cryptocurrencies other than Bitcoin. The term comes from 'alternative coins'. There are thousands of altcoins, each with different purposes and features.\n\nPopular altcoin categories:\n• Platform coins (Ethereum, Solana)\n• Stablecoins (USDC, USDT)\n• Meme coins (Dogecoin, Shiba Inu)\n• Privacy coins (Monero, Zcash)\n• Utility tokens (specific use cases)",
+      "keyTakeaways": [
+        "Altcoins are all cryptocurrencies except Bitcoin",
+        "Each serves different purposes",
+        "Research before investing in any altcoin"
+      ]
+    },
+    {
+      "id": 6,
+      "category": "defi",
+      "title": "What is DeFi?",
+      "emoji": "🏦",
+      "difficulty": "intermediate",
+      "content": "DeFi (Decentralized Finance) refers to financial services built on blockchain technology. It recreates traditional financial systems like lending, borrowing, and trading without banks.\n\nDeFi services:\n• Lending and borrowing\n• Decentralized exchanges (DEXs)\n• Yield farming\n• Liquidity pools\n• Staking rewards",
+      "keyTakeaways": [
+        "DeFi removes middlemen from financial services",
+        "Open 24/7 with no geographical restrictions",
+        "Higher risk but potentially higher returns"
+      ]
+    },
+    {
+      "id": 7,
+      "category": "defi",
+      "title": "Understanding Smart Contracts",
+      "emoji": "📜",
+      "difficulty": "intermediate",
+      "content": "Smart contracts are self-executing programs stored on a blockchain. When certain conditions are met, the contract automatically executes. No lawyers or intermediaries needed!\n\nHow they work:\n• Written in code (usually Solidity)\n• Deployed to blockchain\n• Execute automatically when triggered\n• Cannot be changed once deployed\n• Transparent and verifiable",
+      "keyTakeaways": [
+        "Smart contracts execute automatically",
+        "Remove the need for intermediaries",
+        "Form the basis of DeFi and dApps"
+      ]
+    },
+    {
+      "id": 8,
+      "category": "defi",
+      "title": "Liquidity Pools Explained",
+      "emoji": "💧",
+      "difficulty": "intermediate",
+      "content": "Liquidity pools are collections of cryptocurrencies locked in smart contracts. They enable decentralized trading by providing the funds needed for exchanges.\n\nHow they work:\n• Users deposit pairs of tokens\n• Traders swap tokens from the pool\n• Liquidity providers earn fees\n• Automated market makers set prices\n• Risk of impermanent loss",
+      "keyTakeaways": [
+        "Liquidity pools enable decentralized trading",
+        "Providers earn fees from trades",
+        "Understand impermanent loss before providing liquidity"
+      ]
+    },
+    {
+      "id": 9,
+      "category": "nft",
+      "title": "What are NFTs?",
+      "emoji": "🎨",
+      "difficulty": "beginner",
+      "content": "NFT stands for Non-Fungible Token. Unlike cryptocurrencies where each coin is identical, NFTs are unique digital items. They prove ownership of digital or physical assets on the blockchain.\n\nCommon NFT uses:\n• Digital art\n• Collectibles\n• Gaming items\n• Music and videos\n• Real estate deeds\n• Membership passes",
+      "keyTakeaways": [
+        "NFTs are unique, non-interchangeable tokens",
+        "Prove ownership of digital assets",
+        "Stored on blockchain for authenticity"
+      ]
+    },
+    {
+      "id": 10,
+      "category": "nft",
+      "title": "NFT Marketplaces",
+      "emoji": "🛍️",
+      "difficulty": "beginner",
+      "content": "NFT marketplaces are platforms where you can buy, sell, and trade NFTs. Each marketplace has its own features, fees, and supported blockchains.\n\nPopular marketplaces:\n• OpenSea - Largest NFT marketplace\n• Rarible - Community-owned\n• Magic Eden - Solana-focused\n• Blur - Pro trader platform\n• Foundation - Curated art",
+      "keyTakeaways": [
+        "Multiple marketplaces exist for trading NFTs",
+        "Each has different fees and features",
+        "Always verify authenticity before buying"
+      ]
+    },
+    {
+      "id": 11,
+      "category": "trading",
+      "title": "Crypto Exchanges Explained",
+      "emoji": "🏪",
+      "difficulty": "beginner",
+      "content": "Cryptocurrency exchanges are platforms where you can buy, sell, and trade crypto. There are two main types: centralized (CEX) and decentralized (DEX).\n\nCentralized exchanges:\n• Operated by companies (Coinbase, Binance)\n• Easy to use for beginners\n• Higher liquidity\n• Require KYC verification\n\nDecentralized exchanges:\n• No central authority\n• You control your keys\n• No KYC required\n• More complex to use",
+      "keyTakeaways": [
+        "CEXs are easier but you don't control your keys",
+        "DEXs give you full control but are more complex",
+        "Choose based on your comfort level and needs"
+      ]
+    },
+    {
+      "id": 12,
+      "category": "trading",
+      "title": "Understanding Market Orders",
+      "emoji": "📊",
+      "difficulty": "intermediate",
+      "content": "Market orders are the simplest type of trade. You buy or sell at the current market price immediately. Great for quick trades, but the price might change slightly before execution.\n\nOrder types:\n• Market order - Execute immediately at current price\n• Limit order - Set your desired price\n• Stop-loss - Automatic sell at specific price\n• Take-profit - Automatic sell when target reached",
+      "keyTakeaways": [
+        "Market orders execute immediately",
+        "Limit orders let you set your price",
+        "Use stop-losses to manage risk"
+      ]
+    },
+    {
+      "id": 13,
+      "category": "trading",
+      "title": "Technical Analysis Basics",
+      "emoji": "📈",
+      "difficulty": "intermediate",
+      "content": "Technical analysis involves studying price charts and patterns to predict future movements. Traders use indicators and chart patterns to make decisions.\n\nCommon indicators:\n• Moving averages\n• RSI (Relative Strength Index)\n• MACD (Moving Average Convergence Divergence)\n• Support and resistance levels\n• Volume analysis",
+      "keyTakeaways": [
+        "Technical analysis uses historical data",
+        "Many indicators exist to help predict trends",
+        "Not foolproof - use with other research"
+      ]
+    },
+    {
+      "id": 14,
+      "category": "security",
+      "title": "Crypto Wallets Explained",
+      "emoji": "👛",
+      "difficulty": "beginner",
+      "content": "A crypto wallet stores your private keys (passwords) that give you access to your cryptocurrency. Not your keys, not your crypto!\n\nWallet types:\n• Hot wallets - Connected to internet (MetaMask, Trust Wallet)\n• Cold wallets - Offline storage (Ledger, Trezor)\n• Paper wallets - Keys written on paper\n• Custodial - Exchange holds your keys\n• Non-custodial - You control your keys",
+      "keyTakeaways": [
+        "Wallets store your private keys, not actual crypto",
+        "Cold wallets are most secure",
+        "Never share your private keys or seed phrase"
+      ]
+    },
+    {
+      "id": 15,
+      "category": "security",
+      "title": "Avoiding Scams",
+      "emoji": "🚨",
+      "difficulty": "beginner",
+      "content": "The crypto space has many scams. Being aware of common tactics can protect your funds.\n\nCommon scams:\n• Phishing websites and emails\n• Fake giveaways\n• Pump and dump schemes\n• Rug pulls (fake projects)\n• Romance scams\n• Fake customer support",
+      "keyTakeaways": [
+        "Never share private keys or seed phrases",
+        "Verify URLs carefully before connecting wallet",
+        "If it sounds too good to be true, it probably is"
+      ]
+    },
+    {
+      "id": 16,
+      "category": "security",
+      "title": "Two-Factor Authentication",
+      "emoji": "🔐",
+      "difficulty": "beginner",
+      "content": "Two-factor authentication (2FA) adds an extra security layer to your accounts. Even if someone gets your password, they can't access your account without the second factor.\n\nTypes of 2FA:\n• Authenticator apps (Google Authenticator, Authy)\n• SMS codes (less secure)\n• Hardware keys (YubiKey)\n• Biometric (fingerprint, face ID)",
+      "keyTakeaways": [
+        "Always enable 2FA on exchange accounts",
+        "Authenticator apps are more secure than SMS",
+        "Keep backup codes in a safe place"
+      ]
+    },
+    {
+      "id": 17,
+      "category": "future",
+      "title": "Web3 and the Future",
+      "emoji": "🌐",
+      "difficulty": "intermediate",
+      "content": "Web3 represents the next evolution of the internet, built on blockchain technology. Instead of big tech companies owning your data, you do.\n\nWeb3 features:\n• Decentralized ownership\n• Token-based economics\n• User-owned data\n• Permissionless innovation\n• Interoperable platforms",
+      "keyTakeaways": [
+        "Web3 gives users control of their data",
+        "Built on blockchain and crypto principles",
+        "Still evolving but growing rapidly"
+      ]
+    },
+    {
+      "id": 18,
+      "category": "future",
+      "title": "Layer 2 Solutions",
+      "emoji": "⚡",
+      "difficulty": "advanced",
+      "content": "Layer 2 solutions are built on top of existing blockchains to improve speed and reduce costs. They handle transactions off the main chain, then settle on the main chain.\n\nPopular Layer 2s:\n• Polygon - Ethereum scaling\n• Arbitrum - Optimistic rollup\n• Optimism - Another rollup solution\n• Lightning Network - Bitcoin scaling\n• zkSync - Zero-knowledge rollup",
+      "keyTakeaways": [
+        "Layer 2s improve blockchain scalability",
+        "Faster and cheaper than Layer 1",
+        "Maintain security of main blockchain"
+      ]
+    },
+    {
+      "id": 19,
+      "category": "future",
+      "title": "The Metaverse and Crypto",
+      "emoji": "🥽",
+      "difficulty": "intermediate",
+      "content": "The metaverse is a collective virtual shared space where users can interact. Cryptocurrency and NFTs enable the metaverse economy.\n\nMetaverse use cases:\n• Virtual real estate\n• Digital fashion and items\n• Virtual events and concerts\n• Play-to-earn games\n• Social interactions\n• Virtual workspaces",
+      "keyTakeaways": [
+        "Metaverse combines VR with blockchain",
+        "NFTs enable ownership of virtual items",
+        "Growing market with major investments"
+      ]
+    },
+    {
+      "id": 20,
+      "category": "blockchain",
+      "title": "Consensus Mechanisms",
+      "emoji": "🤝",
+      "difficulty": "advanced",
+      "content": "Consensus mechanisms are how blockchains agree on the state of the network. They ensure all nodes have the same data without a central authority.\n\nMain types:\n• Proof of Work (PoW) - Mining-based\n• Proof of Stake (PoS) - Staking-based\n• Delegated Proof of Stake (DPoS)\n• Proof of Authority (PoA)\n• Practical Byzantine Fault Tolerance (PBFT)",
+      "keyTakeaways": [
+        "Consensus mechanisms validate transactions",
+        "PoW uses energy, PoS uses staked coins",
+        "Each has trade-offs in security and speed"
+      ]
+    }
+  ]
+}

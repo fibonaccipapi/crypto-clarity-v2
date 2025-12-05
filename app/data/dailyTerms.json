@@ -1,0 +1,154 @@
+{
+  "terms": [
+    {
+      "term": "Blockchain",
+      "definition": "A distributed digital ledger that records transactions across many computers.",
+      "category": "Technology"
+    },
+    {
+      "term": "Bitcoin",
+      "definition": "The first and most well-known cryptocurrency, created in 2009.",
+      "category": "Cryptocurrency"
+    },
+    {
+      "term": "Ethereum",
+      "definition": "A blockchain platform that enables smart contracts and decentralized applications.",
+      "category": "Platform"
+    },
+    {
+      "term": "Smart Contract",
+      "definition": "Self-executing code that automatically performs actions when conditions are met.",
+      "category": "Technology"
+    },
+    {
+      "term": "DeFi",
+      "definition": "Decentralized Finance - financial services built on blockchain without intermediaries.",
+      "category": "Finance"
+    },
+    {
+      "term": "NFT",
+      "definition": "Non-Fungible Token - a unique digital item stored on blockchain.",
+      "category": "Digital Assets"
+    },
+    {
+      "term": "Wallet",
+      "definition": "Digital tool for storing, sending, and receiving cryptocurrency using private keys.",
+      "category": "Security"
+    },
+    {
+      "term": "Mining",
+      "definition": "Process of validating blockchain transactions and creating new coins using computational power.",
+      "category": "Technology"
+    },
+    {
+      "term": "Staking",
+      "definition": "Locking cryptocurrency to support network operations and earn rewards.",
+      "category": "Finance"
+    },
+    {
+      "term": "Gas Fee",
+      "definition": "Transaction cost paid to process operations on a blockchain network.",
+      "category": "Finance"
+    },
+    {
+      "term": "Altcoin",
+      "definition": "Any cryptocurrency other than Bitcoin.",
+      "category": "Cryptocurrency"
+    },
+    {
+      "term": "HODL",
+      "definition": "Holding cryptocurrency long-term despite market volatility.",
+      "category": "Trading"
+    },
+    {
+      "term": "DEX",
+      "definition": "Decentralized Exchange - trading platform without central authority.",
+      "category": "Trading"
+    },
+    {
+      "term": "Liquidity Pool",
+      "definition": "Collection of cryptocurrencies locked in a smart contract to enable trading.",
+      "category": "DeFi"
+    },
+    {
+      "term": "Whale",
+      "definition": "Individual or entity holding large amounts of cryptocurrency that can influence prices.",
+      "category": "Trading"
+    },
+    {
+      "term": "Bull Market",
+      "definition": "Market condition characterized by rising prices and optimism.",
+      "category": "Trading"
+    },
+    {
+      "term": "Bear Market",
+      "definition": "Market condition characterized by falling prices and pessimism.",
+      "category": "Trading"
+    },
+    {
+      "term": "Private Key",
+      "definition": "Secret cryptographic code that controls access to your cryptocurrency.",
+      "category": "Security"
+    },
+    {
+      "term": "Seed Phrase",
+      "definition": "12-24 words that can recover your wallet - never share with anyone.",
+      "category": "Security"
+    },
+    {
+      "term": "2FA",
+      "definition": "Two-Factor Authentication - extra security layer for your accounts.",
+      "category": "Security"
+    },
+    {
+      "term": "Cold Wallet",
+      "definition": "Offline hardware device for storing cryptocurrency securely.",
+      "category": "Security"
+    },
+    {
+      "term": "Hot Wallet",
+      "definition": "Online wallet connected to the internet for easy access.",
+      "category": "Security"
+    },
+    {
+      "term": "Market Cap",
+      "definition": "Total value of all coins in circulation for a cryptocurrency.",
+      "category": "Finance"
+    },
+    {
+      "term": "ATH",
+      "definition": "All-Time High - the highest price ever reached by a cryptocurrency.",
+      "category": "Trading"
+    },
+    {
+      "term": "Airdrop",
+      "definition": "Free distribution of tokens to wallet addresses.",
+      "category": "Marketing"
+    },
+    {
+      "term": "Whitepaper",
+      "definition": "Technical document explaining a cryptocurrency project's goals and technology.",
+      "category": "Research"
+    },
+    {
+      "term": "Proof of Work",
+      "definition": "Consensus mechanism requiring computational power to validate transactions.",
+      "category": "Technology"
+    },
+    {
+      "term": "Proof of Stake",
+      "definition": "Consensus mechanism using staked coins instead of computational power.",
+      "category": "Technology"
+    },
+    {
+      "term": "Layer 2",
+      "definition": "Secondary framework built on top of a blockchain to improve speed and reduce costs.",
+      "category": "Technology"
+    },
+    {
+      "term": "Web3",
+      "definition": "Next evolution of the internet built on blockchain with user ownership.",
+      "category": "Technology"
+    }
+  ]
+}

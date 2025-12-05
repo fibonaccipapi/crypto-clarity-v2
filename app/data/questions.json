@@ -1,0 +1,256 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "title": "Basics of Blockchain",
+      "icon": "🔗",
+      "questions": [
+        {
+          "question": "What is a blockchain?",
+          "options": ["A distributed digital ledger", "A type of cryptocurrency", "A mining tool", "A trading platform"],
+          "correct": "A distributed digital ledger"
+        },
+        {
+          "question": "What is a block in blockchain?",
+          "options": ["A collection of transactions", "A type of cryptocurrency", "A mining device", "A wallet address"],
+          "correct": "A collection of transactions"
+        },
+        {
+          "question": "What is decentralization?",
+          "options": ["No single entity controls the network", "Fast transaction speeds", "Government regulation", "Bank-controlled system"],
+          "correct": "No single entity controls the network"
+        },
+        {
+          "question": "What makes blockchain secure?",
+          "options": ["Cryptography and distributed consensus", "Bank verification", "Government oversight", "Password protection"],
+          "correct": "Cryptography and distributed consensus"
+        },
+        {
+          "question": "Can blockchain data be changed once recorded?",
+          "options": ["No, it's immutable", "Yes, easily", "Only by miners", "Only by administrators"],
+          "correct": "No, it's immutable"
+        },
+        {
+          "question": "What is a node in blockchain?",
+          "options": ["A computer maintaining a copy of the blockchain", "A cryptocurrency wallet", "A mining algorithm", "A transaction fee"],
+          "correct": "A computer maintaining a copy of the blockchain"
+        },
+        {
+          "question": "What does 'trustless' mean in blockchain?",
+          "options": ["No need to trust a central authority", "The system is unreliable", "Users don't trust each other", "Transactions are unverified"],
+          "correct": "No need to trust a central authority"
+        },
+        {
+          "question": "What is the primary benefit of blockchain transparency?",
+          "options": ["Anyone can verify transactions", "Faster processing", "Lower fees", "Better privacy"],
+          "correct": "Anyone can verify transactions"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Crypto Concepts",
+      "icon": "💎",
+      "questions": [
+        {
+          "question": "What was the first cryptocurrency?",
+          "options": ["Bitcoin", "Ethereum", "Litecoin", "Ripple"],
+          "correct": "Bitcoin"
+        },
+        {
+          "question": "What is the maximum supply of Bitcoin?",
+          "options": ["21 million", "100 million", "Unlimited", "1 billion"],
+          "correct": "21 million"
+        },
+        {
+          "question": "What are altcoins?",
+          "options": ["Any cryptocurrency other than Bitcoin", "Alternative mining methods", "Backup wallets", "Fake cryptocurrencies"],
+          "correct": "Any cryptocurrency other than Bitcoin"
+        },
+        {
+          "question": "What makes Ethereum different from Bitcoin?",
+          "options": ["Smart contract capability", "Faster transactions only", "Lower fees only", "Government backing"],
+          "correct": "Smart contract capability"
+        },
+        {
+          "question": "What is a stablecoin?",
+          "options": ["Cryptocurrency pegged to stable assets", "The most secure crypto", "A coin that never changes price", "Government-issued crypto"],
+          "correct": "Cryptocurrency pegged to stable assets"
+        },
+        {
+          "question": "What does 'mining' mean in cryptocurrency?",
+          "options": ["Validating transactions and creating new coins", "Buying cryptocurrency", "Stealing crypto", "Trading on exchanges"],
+          "correct": "Validating transactions and creating new coins"
+        },
+        {
+          "question": "What is a cryptocurrency wallet?",
+          "options": ["Digital tool for storing private keys", "Physical device only", "Bank account", "Mining equipment"],
+          "correct": "Digital tool for storing private keys"
+        },
+        {
+          "question": "What does 'HODL' mean in crypto?",
+          "options": ["Hold onto crypto long-term", "Sell immediately", "Mine cryptocurrency", "Day trade actively"],
+          "correct": "Hold onto crypto long-term"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "DeFi",
+      "icon": "🏦",
+      "questions": [
+        {
+          "question": "What does DeFi stand for?",
+          "options": ["Decentralized Finance", "Digital Finance", "Distributed Funding", "Defined Interest"],
+          "correct": "Decentralized Finance"
+        },
+        {
+          "question": "What is a smart contract?",
+          "options": ["Self-executing code on blockchain", "Legal document", "Trading agreement", "Wallet password"],
+          "correct": "Self-executing code on blockchain"
+        },
+        {
+          "question": "What is a liquidity pool?",
+          "options": ["Tokens locked in smart contracts for trading", "A mining pool", "A wallet type", "An exchange account"],
+          "correct": "Tokens locked in smart contracts for trading"
+        },
+        {
+          "question": "What is yield farming?",
+          "options": ["Earning rewards by providing liquidity", "Mining cryptocurrency", "Staking only", "Day trading"],
+          "correct": "Earning rewards by providing liquidity"
+        },
+        {
+          "question": "What is a DEX?",
+          "options": ["Decentralized Exchange", "Digital Exchange", "Direct Exchange", "Default Exchange"],
+          "correct": "Decentralized Exchange"
+        },
+        {
+          "question": "What is impermanent loss?",
+          "options": ["Loss from price changes in liquidity pools", "Permanent loss of funds", "Transaction fees", "Mining costs"],
+          "correct": "Loss from price changes in liquidity pools"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "NFTs",
+      "icon": "🎨",
+      "questions": [
+        {
+          "question": "What does NFT stand for?",
+          "options": ["Non-Fungible Token", "New Finance Technology", "Network File Transfer", "Non-Financial Token"],
+          "correct": "Non-Fungible Token"
+        },
+        {
+          "question": "What makes an NFT unique?",
+          "options": ["Each token is one-of-a-kind", "High price", "Digital format", "Blockchain storage"],
+          "correct": "Each token is one-of-a-kind"
+        },
+        {
+          "question": "Where are most NFTs stored?",
+          "options": ["On blockchain with metadata", "On centralized servers", "In email", "On USB drives"],
+          "correct": "On blockchain with metadata"
+        },
+        {
+          "question": "What is the largest NFT marketplace?",
+          "options": ["OpenSea", "Amazon", "eBay", "Etsy"],
+          "correct": "OpenSea"
+        },
+        {
+          "question": "Can you screenshot an NFT and own it?",
+          "options": ["No, ownership is on blockchain", "Yes, screenshots transfer ownership", "Only with permission", "Yes, it's the same"],
+          "correct": "No, ownership is on blockchain"
+        },
+        {
+          "question": "What is 'minting' an NFT?",
+          "options": ["Creating and recording on blockchain", "Buying an NFT", "Selling an NFT", "Trading an NFT"],
+          "correct": "Creating and recording on blockchain"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Trading & Markets",
+      "icon": "📈",
+      "questions": [
+        {
+          "question": "What is a market order?",
+          "options": ["Buy/sell at current market price", "Future dated trade", "Automated trading", "Limit order"],
+          "correct": "Buy/sell at current market price"
+        },
+        {
+          "question": "What is a limit order?",
+          "options": ["Trade at a specific price or better", "Maximum purchase amount", "Minimum sale price", "Time-limited order"],
+          "correct": "Trade at a specific price or better"
+        },
+        {
+          "question": "What does 'bull market' mean?",
+          "options": ["Rising prices", "Falling prices", "Stable market", "Volatile market"],
+          "correct": "Rising prices"
+        },
+        {
+          "question": "What does 'bear market' mean?",
+          "options": ["Falling prices", "Rising prices", "No movement", "High volume"],
+          "correct": "Falling prices"
+        },
+        {
+          "question": "What is FOMO in trading?",
+          "options": ["Fear Of Missing Out", "Fear Of Market Orders", "First Order Market Operation", "Fixed Order Money Operation"],
+          "correct": "Fear Of Missing Out"
+        },
+        {
+          "question": "What is a stop-loss order?",
+          "options": ["Automatic sell at specified price", "Profit-taking order", "Buy order", "Cancel order"],
+          "correct": "Automatic sell at specified price"
+        },
+        {
+          "question": "What does 'whale' mean in crypto?",
+          "options": ["Large holder who can influence price", "New investor", "Day trader", "Exchange operator"],
+          "correct": "Large holder who can influence price"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Security",
+      "icon": "🔒",
+      "questions": [
+        {
+          "question": "What is a private key?",
+          "options": ["Secret code controlling your crypto", "Public wallet address", "Exchange password", "Username"],
+          "correct": "Secret code controlling your crypto"
+        },
+        {
+          "question": "What is a seed phrase?",
+          "options": ["12-24 words to recover wallet", "Password", "Username", "Security question"],
+          "correct": "12-24 words to recover wallet"
+        },
+        {
+          "question": "Should you share your seed phrase?",
+          "options": ["Never, with anyone", "Only with support", "With family", "On social media"],
+          "correct": "Never, with anyone"
+        },
+        {
+          "question": "What is 2FA?",
+          "options": ["Two-Factor Authentication", "Two Financial Accounts", "Two Fast Approvals", "Two Factor Analysis"],
+          "correct": "Two-Factor Authentication"
+        },
+        {
+          "question": "What is a cold wallet?",
+          "options": ["Offline storage device", "Frozen account", "Inactive wallet", "Exchange wallet"],
+          "correct": "Offline storage device"
+        },
+        {
+          "question": "What is phishing?",
+          "options": ["Scam to steal login credentials", "Mining method", "Trading strategy", "Wallet type"],
+          "correct": "Scam to steal login credentials"
+        },
+        {
+          "question": "What does 'Not your keys, not your crypto' mean?",
+          "options": ["Control private keys to own crypto", "Keys aren't important", "Exchanges own your crypto", "Share keys for safety"],
+          "correct": "Control private keys to own crypto"
+        }
+      ]
+    }
+  ]
+}
