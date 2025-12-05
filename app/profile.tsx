@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from './contexts/ThemeContext';
 import { useWallet } from './contexts/WalletContext';
@@ -111,12 +111,22 @@ export default function ProfileScreen() {
       <View style={styles.profileSection}>
         <GlassCard style={styles.profileCard}>
           <View style={styles.profileContent}>
-            <TouchableOpacity 
-              style={styles.avatarContainer}
+            <TouchableOpacity
               onPress={handleAvatarPress}
               onLongPress={handleAvatarLongPress}
             >
-              <Text style={styles.avatar}>👤</Text>
+              <LinearGradient
+                colors={['#66FF99', '#33FF66', '#00FF33']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.avatarBorder}
+              >
+                <Image
+                  source={require('../assets/images/profile-icon.png')}
+                  style={styles.avatar}
+                  resizeMode="cover"
+                />
+              </LinearGradient>
             </TouchableOpacity>
             <Text style={styles.avatarHint}>Tap to change - Hold to remove</Text>
             <Text style={styles.username}>Crypto Learner</Text>
@@ -258,17 +268,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  avatarContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
+  avatarBorder: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    padding: 3,
     marginBottom: 8,
   },
   avatar: {
-    fontSize: 32,
+    width: '100%',
+    height: '100%',
+    borderRadius: 47,
   },
   avatarHint: {
     fontSize: 12,

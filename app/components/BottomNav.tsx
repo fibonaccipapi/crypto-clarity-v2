@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text, Image } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -7,11 +7,11 @@ export function BottomNav() {
   const pathname = usePathname();
 
   const navItems = [
-    { route: '/', icon: '🏠', label: 'Home' },
-    { route: '/learn', icon: '📚', label: 'Learn' },
-    { route: '/quiz', icon: '❓', label: 'Quiz' },
-    { route: '/flashcards', icon: '🎮', label: 'Games' },
-    { route: '/profile', icon: '👤', label: 'Profile' },
+    { route: '/', icon: '🏠', label: 'Home', isImage: false },
+    { route: '/learn', icon: '📚', label: 'Learn', isImage: false },
+    { route: '/quiz', icon: '❓', label: 'Quiz', isImage: false },
+    { route: '/flashcards', icon: '🎮', label: 'Games', isImage: false },
+    { route: '/profile', icon: require('../../assets/images/profile-icon.png'), label: 'Profile', isImage: true },
   ];
 
   return (
@@ -31,17 +31,32 @@ export function BottomNav() {
                 onPress={() => router.push(item.route as any)}
                 style={styles.navItem}
               >
-                <View style={[
-                  styles.iconContainer,
-                  isActive && { borderColor: color, borderWidth: 2 }
-                ]}>
-                  <Text style={[
-                    styles.iconText,
-                    isActive && { color: color }
+                {item.isImage ? (
+                  <LinearGradient
+                    colors={['#00FF33', '#00AA22', '#006611']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.iconImageBorder}
+                  >
+                    <Image
+                      source={item.icon}
+                      style={styles.iconImage}
+                      resizeMode="cover"
+                    />
+                  </LinearGradient>
+                ) : (
+                  <View style={[
+                    styles.iconContainer,
+                    isActive && { borderColor: color, borderWidth: 2 }
                   ]}>
-                    {item.icon}
-                  </Text>
-                </View>
+                    <Text style={[
+                      styles.iconText,
+                      isActive && { color: color }
+                    ]}>
+                      {item.icon}
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             );
           })}
@@ -87,5 +102,16 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: 28,
     color: '#666',
+  },
+  iconImageBorder: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    padding: 2,
+  },
+  iconImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 14,
   },
 });

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Modal, StyleSheet, AppState } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Modal, StyleSheet, AppState, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { useState, useEffect, useRef } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -228,12 +228,16 @@ export default function HomeScreen() {
           <Link href="/profile" asChild>
             <TouchableOpacity style={styles.gridItem}>
               <LinearGradient
-                colors={['rgba(255, 107, 203, 0.8)', 'rgba(255, 107, 203, 0.4)', 'rgba(255, 107, 203, 0.1)']}
+                colors={['#66FF99', '#33FF66', '#00FF33']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={styles.iconButton}
+                style={styles.profileIconBorder}
               >
-                <Text style={styles.iconEmoji}>👤</Text>
+                <Image
+                  source={require('../assets/images/profile-icon.png')}
+                  style={styles.profileIconImage}
+                  resizeMode="cover"
+                />
               </LinearGradient>
               <Text style={styles.iconLabel}>Profile</Text>
               <Text style={styles.iconSubtitle}>Your Stats</Text>
@@ -401,6 +405,18 @@ const styles = StyleSheet.create({
   },
   iconEmoji: {
     fontSize: 50,
+  },
+  profileIconBorder: {
+    width: 120,
+    height: 120,
+    borderRadius: 30,
+    padding: 3,
+    marginBottom: 12,
+  },
+  profileIconImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 27,
   },
   iconLabel: {
     fontSize: 20,
