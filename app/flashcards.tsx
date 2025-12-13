@@ -1,8 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useWallet } from './contexts/WalletContext';
 import flashcardsData from './data/flashcards.json';
+
+const flashcardIcon = require('../assets/images/flashcard-icon.png');
+const matchGameIcon = require('../assets/images/games-icon.png');
 
 const GAME_TIME_LIMIT = 90;
 
@@ -38,6 +41,52 @@ const Badge = ({ text, variant = 'green' }: any) => {
         {text}
       </Text>
     </View>
+  );
+};
+
+const IconContainer = ({ icon, glowColor = 'green' }: any) => {
+  const iconSize = 64;
+
+  const gradientColors: any = {
+    green: ['rgba(102, 255, 153, 0.9)', 'rgba(51, 255, 102, 0.7)', 'rgba(0, 255, 51, 0.5)', 'rgba(0, 170, 34, 0.3)'],
+    pink: ['rgba(255, 153, 221, 0.9)', 'rgba(255, 107, 203, 0.7)', 'rgba(255, 51, 153, 0.5)', 'rgba(204, 86, 153, 0.3)'],
+    purple: ['rgba(192, 132, 252, 0.9)', 'rgba(168, 85, 247, 0.7)', 'rgba(147, 51, 234, 0.5)', 'rgba(126, 34, 206, 0.3)'],
+  };
+
+  return (
+    <LinearGradient
+      colors={gradientColors[glowColor]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[styles.iconBorder, {
+        width: iconSize,
+        height: iconSize,
+        borderRadius: 16,
+      }]}
+    >
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0)']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.iconBorder, {
+          width: iconSize,
+          height: iconSize,
+          borderRadius: 16,
+          position: 'absolute',
+        }]}
+      />
+      <View style={[styles.iconInnerContainer, {
+        width: iconSize - 4,
+        height: iconSize - 4,
+        overflow: 'hidden',
+      }]}>
+        <Image
+          source={icon}
+          style={[styles.iconImage, { width: iconSize * 0.95, height: iconSize * 0.95 }]}
+          resizeMode="cover"
+        />
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -186,7 +235,7 @@ export default function Games() {
             >
               <GlassCard>
                 <View style={styles.gameCardContent}>
-                  <Text style={styles.gameEmoji}>🎴</Text>
+                  <IconContainer icon={flashcardIcon} glowColor="green" />
                   <Text style={styles.gameTitle}>Flashcards</Text>
                   <Text style={styles.gameDescription}>
                     Study crypto terms at your own pace
@@ -205,7 +254,7 @@ export default function Games() {
             >
               <GlassCard>
                 <View style={styles.gameCardContent}>
-                  <Text style={styles.gameEmoji}>🎯</Text>
+                  <IconContainer icon={matchGameIcon} glowColor="pink" />
                   <Text style={styles.gameTitle}>Match Game</Text>
                   <Text style={styles.gameDescription}>
                     Match terms with definitions in 90 seconds
@@ -352,9 +401,9 @@ export default function Games() {
                       <LinearGradient
                         colors={
                           isMatched
-                            ? ['rgba(0, 255, 51, 0.28)', 'rgba(0, 255, 51, 0.12)']
+                            ? ['rgba(0, 255, 51, 0.4)', 'rgba(0, 255, 51, 0.2)']
                             : isSelected
-                            ? ['rgba(255, 107, 203, 0.35)', 'rgba(255, 107, 203, 0.12)']
+                            ? ['rgba(255, 107, 203, 0.6)', 'rgba(255, 107, 203, 0.3)']
                             : ['rgba(255, 107, 203, 0.25)', 'rgba(255, 107, 203, 0.08)']
                         }
                         start={{ x: 0, y: 0 }}
@@ -365,7 +414,7 @@ export default function Games() {
                           isSelected && styles.matchCardSelected,
                         ]}
                       >
-                        <Text style={[styles.matchCardText, styles.termText]}>
+                        <Text style={[styles.matchCardText, isMatched ? styles.matchedText : styles.termText]}>
                           {card.term}
                         </Text>
                       </LinearGradient>
@@ -391,9 +440,9 @@ export default function Games() {
                       <LinearGradient
                         colors={
                           isMatched
-                            ? ['rgba(0, 255, 51, 0.28)', 'rgba(0, 255, 51, 0.12)']
+                            ? ['rgba(0, 255, 51, 0.4)', 'rgba(0, 255, 51, 0.2)']
                             : isSelected
-                            ? ['rgba(0, 255, 51, 0.32)', 'rgba(0, 255, 51, 0.12)']
+                            ? ['rgba(0, 255, 51, 0.6)', 'rgba(0, 255, 51, 0.3)']
                             : ['rgba(0, 255, 51, 0.22)', 'rgba(0, 255, 51, 0.08)']
                         }
                         start={{ x: 0, y: 0 }}
@@ -404,7 +453,7 @@ export default function Games() {
                           isSelected && styles.matchCardSelected,
                         ]}
                       >
-                        <Text style={[styles.matchCardText, styles.definitionText]}>
+                        <Text style={[styles.matchCardText, isMatched ? styles.matchedText : styles.definitionText]}>
                           {card.definition}
                         </Text>
                       </LinearGradient>
@@ -470,8 +519,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  gameEmoji: {
-    fontSize: 48,
+  iconBorder: {
+    padding: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconInnerContainer: {
+    borderRadius: 14,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconImage: {
+    width: 64,
+    height: 64,
   },
   gameTitle: {
     fontSize: 24,
@@ -631,6 +692,9 @@ const styles = StyleSheet.create({
   },
   definitionText: {
     color: '#00FF33',
+  },
+  matchedText: {
+    color: '#FFFFFF',
   },
   resultContainer: {
     flex: 1,

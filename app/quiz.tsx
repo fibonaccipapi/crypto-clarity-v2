@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useWallet } from './contexts/WalletContext';
+import { useStats } from './contexts/StatsContext';
 import quizData from './data/questions.json';
 
 const blockchainIcon = require('../assets/images/blockchain-icon.png');
@@ -94,15 +95,17 @@ const IconContainer = ({ icon, glowColor = 'green' }: any) => {
 
 export default function Quiz() {
   const { addBalance } = useWallet();
+  const stats = useStats();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [shuffledQuestions, setShuffledQuestions] = useState<any[]>([]);
 
   const categories = quizData.categories || [];
-  const currentQuestion = selectedCategory?.questions[currentQuestionIndex];
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
 
   const getCategoryIcon = (categoryId: number) => {
     const iconMap: any = {
@@ -116,6 +119,25 @@ export default function Quiz() {
     return iconMap[categoryId];
   };
 
+  const shuffleArray = (array: any[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  useEffect(() => {
+    if (selectedCategory) {
+      const questionsWithShuffledAnswers = selectedCategory.questions.map((question: any) => ({
+        ...question,
+        options: shuffleArray(question.options)
+      }));
+      setShuffledQuestions(shuffleArray(questionsWithShuffledAnswers));
+    }
+  }, [selectedCategory]);
+
   const handleAnswer = (answer: string) => {
     setSelectedAnswer(answer);
     setShowResult(true);
@@ -125,12 +147,13 @@ export default function Quiz() {
       addBalance(10);
     }
 
-    setTimeout(() => {
-      if (currentQuestionIndex < selectedCategory.questions.length - 1) {
+    setTimeout(async () => {
+      if (currentQuestionIndex < shuffledQuestions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedAnswer(null);
         setShowResult(false);
       } else {
+        await stats.updateQuizStats(score + (answer === currentQuestion.correct ? 1 : 0), shuffledQuestions.length);
         setQuizCompleted(true);
       }
     }, 1500);
@@ -143,6 +166,7 @@ export default function Quiz() {
     setSelectedAnswer(null);
     setShowResult(false);
     setQuizCompleted(false);
+    setShuffledQuestions([]);
   };
 
   const getCategoryColor = (index: number) => {
@@ -188,7 +212,7 @@ export default function Quiz() {
   }
 
   if (quizCompleted) {
-    const percentage = Math.round((score / selectedCategory.questions.length) * 100);
+    const percentage = Math.round((score / shuffledQuestions.length) * 100);
     const earnedCCC = score * 10;
 
     return (
@@ -202,7 +226,7 @@ export default function Quiz() {
               <Text style={styles.resultTitle}>Quiz Complete!</Text>
               <Text style={styles.resultScore}>{percentage}%</Text>
               <Text style={styles.resultText}>
-                {score} / {selectedCategory.questions.length} correct
+                {score} / {shuffledQuestions.length} correct
               </Text>
               
               <View style={styles.rewardBox}>
@@ -226,6 +250,10 @@ export default function Quiz() {
     );
   }
 
+  if (!currentQuestion) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.quizHeader}>
@@ -234,14 +262,14 @@ export default function Quiz() {
         </TouchableOpacity>
         <View style={styles.progressContainer}>
           <Text style={styles.progressText}>
-            Question {currentQuestionIndex + 1} / {selectedCategory.questions.length}
+            Question {currentQuestionIndex + 1} / {shuffledQuestions.length}
           </Text>
           <View style={styles.progressBar}>
-            <View 
+            <View
               style={[
-                styles.progressFill, 
-                { width: `${((currentQuestionIndex + 1) / selectedCategory.questions.length) * 100}%` }
-              ]} 
+                styles.progressFill,
+                { width: `${((currentQuestionIndex + 1) / shuffledQuestions.length) * 100}%` }
+              ]}
             />
           </View>
         </View>

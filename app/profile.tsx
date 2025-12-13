@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image } fr
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from './contexts/ThemeContext';
 import { useWallet } from './contexts/WalletContext';
+import { useStats } from './contexts/StatsContext';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BADGES = [
   { id: 1, name: 'First Steps', description: 'Complete your first quiz', earned: true },
@@ -57,32 +60,83 @@ const ProgressBar = ({ progress, color = '#00FF33' }: any) => {
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const { connected, balance } = useWallet();
+  const stats = useStats();
   const [profile, setProfile] = useState(null);
-  const [accuracy, setAccuracy] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [quizzesCompleted, setQuizzesCompleted] = useState(0);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  const { level, xp, xpForNextLevel } = stats.calculateLevel(balance);
+  const { accuracy, streak, quizzesCompleted } = stats;
+
+  const earnedBadges = BADGES.map(badge => {
+    let earned = false;
+    if (badge.id === 1 && quizzesCompleted >= 1) earned = true;
+    if (badge.id === 2 && accuracy === 100 && quizzesCompleted > 0) earned = true;
+    if (badge.id === 3 && streak >= 30) earned = true;
+    if (badge.id === 4 && connected) earned = true;
+    if (badge.id === 5 && quizzesCompleted >= 5) earned = true;
+    if (badge.id === 6 && accuracy === 100 && quizzesCompleted > 0) earned = true;
+    if (badge.id === 7 && streak >= 7) earned = true;
+    if (badge.id === 8 && quizzesCompleted >= 6) earned = true;
+    if (badge.id === 9 && level >= 10) earned = true;
+    if (badge.id === 10 && balance >= 1000) earned = true;
+    return { ...badge, earned };
+  });
 
   useEffect(() => {
     const loadProfile = async () => {
       setProfile({
         username: 'Crypto Learner',
-        level: 0,
-        badges: BADGES.filter(b => b.earned),
+        level,
+        badges: earnedBadges.filter(b => b.earned),
       });
-      setAccuracy(0);
-      setStreak(0);
-      setQuizzesCompleted(1);
-    };
-    
-    loadProfile();
-  }, []);
 
-  const handleAvatarPress = () => {
-    Alert.alert('Change Avatar', 'Avatar change functionality would go here');
+      const savedImage = await AsyncStorage.getItem('profileImage');
+      if (savedImage) {
+        setProfileImage(savedImage);
+      }
+    };
+
+    loadProfile();
+  }, [balance, quizzesCompleted, accuracy, streak, level, connected]);
+
+  const handleAvatarPress = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert('Permission Required', 'Please allow access to your photos to change your profile picture.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      const imageUri = result.assets[0].uri;
+      setProfileImage(imageUri);
+      await AsyncStorage.setItem('profileImage', imageUri);
+    }
   };
 
   const handleAvatarLongPress = () => {
-    Alert.alert('Remove Avatar', 'Remove avatar functionality would go here');
+    Alert.alert(
+      'Remove Avatar',
+      'Are you sure you want to remove your profile picture?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Remove',
+          style: 'destructive',
+          onPress: async () => {
+            setProfileImage(null);
+            await AsyncStorage.removeItem('profileImage');
+          },
+        },
+      ]
+    );
   };
 
   const handleSignOut = () => {
@@ -116,13 +170,19 @@ export default function ProfileScreen() {
               onLongPress={handleAvatarLongPress}
             >
               <LinearGradient
-                colors={['#66FF99', '#33FF66', '#00FF33']}
+                colors={['rgba(102, 255, 153, 0.9)', 'rgba(51, 255, 102, 0.7)', 'rgba(0, 255, 51, 0.5)', 'rgba(0, 170, 34, 0.3)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.avatarBorder}
               >
+                <LinearGradient
+                  colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0)']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={[styles.avatarBorder, { position: 'absolute' }]}
+                />
                 <Image
-                  source={require('../assets/images/profile-icon.png')}
+                  source={profileImage ? { uri: profileImage } : require('../assets/images/profile-icon.png')}
                   style={styles.avatar}
                   resizeMode="cover"
                 />
@@ -130,7 +190,13 @@ export default function ProfileScreen() {
             </TouchableOpacity>
             <Text style={styles.avatarHint}>Tap to change - Hold to remove</Text>
             <Text style={styles.username}>Crypto Learner</Text>
-            <Text style={styles.level}>LEVEL 0</Text>
+            <Text style={styles.level}>LEVEL {level}</Text>
+            <View style={styles.xpBarContainer}>
+              <View style={styles.xpBarBackground}>
+                <View style={[styles.xpBarFill, { width: `${(xp / xpForNextLevel) * 100}%` }]} />
+              </View>
+              <Text style={styles.xpText}>{xp} / {xpForNextLevel} XP</Text>
+            </View>
           </View>
         </GlassCard>
       </View>
@@ -139,7 +205,7 @@ export default function ProfileScreen() {
         <GlassCard style={styles.statsCard}>
           <View style={styles.statsGrid}>
             <View style={styles.statItem}>
-              <Text style={styles.statValue}>0%</Text>
+              <Text style={styles.statValue}>{accuracy}%</Text>
               <Text style={styles.statLabel}>Accuracy</Text>
             </View>
             <View style={styles.statDivider} />
@@ -184,7 +250,7 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Badges</Text>
         <View style={styles.badgesList}>
-          {BADGES.map((badge) => (
+          {earnedBadges.map((badge) => (
             <GlassCard key={badge.id} style={styles.badgeItem}>
               <View style={styles.badgeContent}>
                 <View style={styles.badgeHeader}>
@@ -294,6 +360,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#00FF33',
+  },
+  xpBarContainer: {
+    width: '100%',
+    marginTop: 12,
+    gap: 6,
+  },
+  xpBarBackground: {
+    width: '100%',
+    height: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  xpBarFill: {
+    height: '100%',
+    backgroundColor: '#00FF33',
+    borderRadius: 4,
+  },
+  xpText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#FFF',
+    textAlign: 'center',
   },
   statsSection: {
     paddingHorizontal: 20,
