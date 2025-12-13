@@ -18,7 +18,17 @@ interface StatsContextType {
 
 const StatsContext = createContext<StatsContextType | undefined>(undefined);
 
-const XP_PER_LEVEL = 100;
+const getXPForLevel = (level: number): number => {
+  return Math.floor(100 * level * (level + 1) / 2);
+};
+
+const getTotalXPForLevel = (targetLevel: number): number => {
+  let total = 0;
+  for (let i = 1; i <= targetLevel; i++) {
+    total += getXPForLevel(i);
+  }
+  return total;
+};
 
 export function StatsProvider({ children }: { children: React.ReactNode }) {
   const [quizzesCompleted, setQuizzesCompleted] = useState(0);
@@ -95,16 +105,24 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
   };
 
   const calculateLevel = (cccBalance: number) => {
-    const level = Math.floor(cccBalance / XP_PER_LEVEL);
-    const xp = cccBalance % XP_PER_LEVEL;
-    const xpForNextLevel = XP_PER_LEVEL;
+    let level = 0;
+    let remainingXP = cccBalance;
+
+    while (remainingXP >= getXPForLevel(level + 1)) {
+      level++;
+      remainingXP -= getXPForLevel(level);
+    }
+
+    const xp = remainingXP;
+    const xpForNextLevel = getXPForLevel(level + 1);
+
     return { level, xp, xpForNextLevel };
   };
 
   const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
   const level = 0;
   const xp = 0;
-  const xpForNextLevel = XP_PER_LEVEL;
+  const xpForNextLevel = getXPForLevel(1);
 
   return (
     <StatsContext.Provider
