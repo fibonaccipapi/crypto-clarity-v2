@@ -3,7 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, Image } fr
 import { LinearGradient } from 'expo-linear-gradient';
 import lessonsData from './data/lessons.json';
 
-const logoIcon = require('../assets/images/logo.png');
+const blockchainIcon = require('../assets/images/blockchain-icon.png');
+const cryptoIcon = require('../assets/images/crypto-icon.png');
+const defiIcon = require('../assets/images/defi-icon.png');
+const nftIcon = require('../assets/images/nft-icon.png');
+const tradingIcon = require('../assets/images/trading-icon.png');
+const securityIcon = require('../assets/images/security-icon.png');
+const trendsIcon = require('../assets/images/trends-icon.png');
 
 const GlassCard = ({ children, glowColor = 'green', style }: any) => {
   return (
@@ -89,52 +95,52 @@ export default function Learn() {
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
 
   const categories = [
-    { 
-      id: 'blockchain', 
-      title: 'Blockchain Basics', 
-      icon: '⛓️',
+    {
+      id: 'blockchain',
+      title: 'Blockchain Basics',
+      icon: blockchainIcon,
       color: 'green' as const,
       description: 'Understanding the foundation'
     },
-    { 
-      id: 'cryptocurrency', 
-      title: 'Cryptocurrency', 
-      icon: logoIcon,
+    {
+      id: 'cryptocurrency',
+      title: 'Cryptocurrency',
+      icon: cryptoIcon,
       color: 'pink' as const,
       description: 'Digital money explained'
     },
-    { 
-      id: 'defi', 
-      title: 'DeFi', 
-      icon: '🏦',
+    {
+      id: 'defi',
+      title: 'DeFi',
+      icon: defiIcon,
       color: 'purple' as const,
       description: 'Decentralized finance'
     },
-    { 
-      id: 'nft', 
-      title: 'NFTs', 
-      icon: '🎨',
+    {
+      id: 'nft',
+      title: 'NFTs',
+      icon: nftIcon,
       color: 'pink' as const,
       description: 'Digital ownership'
     },
-    { 
-      id: 'trading', 
-      title: 'Trading', 
-      icon: '📈',
+    {
+      id: 'trading',
+      title: 'Trading',
+      icon: tradingIcon,
       color: 'green' as const,
       description: 'Markets & strategies'
     },
-    { 
-      id: 'security', 
-      title: 'Security', 
-      icon: '🔒',
+    {
+      id: 'security',
+      title: 'Security',
+      icon: securityIcon,
       color: 'purple' as const,
       description: 'Protecting your assets'
     },
-    { 
-      id: 'future', 
-      title: 'Future Trends', 
-      icon: '🚀',
+    {
+      id: 'future',
+      title: 'Future Trends',
+      icon: trendsIcon,
       color: 'pink' as const,
       description: 'What\'s coming next'
     },
