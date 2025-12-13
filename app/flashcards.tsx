@@ -133,14 +133,14 @@ export default function Games() {
   }, [matchedPairs]);
 
   const startMatchGame = () => {
-    const selectedCards = flashcards.slice(0, 6);
+    const shuffled = [...flashcards].sort(() => Math.random() - 0.5);
+    const selectedCards = shuffled.slice(0, 6);
     const termsList = selectedCards.map((card, idx) => ({ ...card, id: idx, type: 'term' })).sort(() => Math.random() - 0.5);
     const definitionsList = selectedCards.map((card, idx) => ({ ...card, id: idx, type: 'definition' })).sort(() => Math.random() - 0.5);
 
     setMatchCards({ terms: termsList, definitions: definitionsList });
     setSelectedTermIndex(null);
     setSelectedDefinitionIndex(null);
-    // initialize per-card animated scales
     setTermScales(termsList.map(() => new Animated.Value(1)));
     setDefScales(definitionsList.map(() => new Animated.Value(1)));
     setMatchedPairs([]);
