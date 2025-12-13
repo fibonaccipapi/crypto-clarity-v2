@@ -54,9 +54,9 @@ const IconContainer = ({ icon, size = 'medium', glowColor = 'green' }: any) => {
   };
 
   const gradientColors: any = {
-    green: ['#66FF99', '#33FF66', '#00FF33'],
-    pink: ['#FF99DD', '#FF6BCB', '#FF3399'],
-    purple: ['#C084FC', '#A855F7', '#9333EA'],
+    green: ['rgba(102, 255, 153, 0.9)', 'rgba(51, 255, 102, 0.7)', 'rgba(0, 255, 51, 0.5)', 'rgba(0, 170, 34, 0.3)'],
+    pink: ['rgba(255, 153, 221, 0.9)', 'rgba(255, 107, 203, 0.7)', 'rgba(255, 51, 153, 0.5)', 'rgba(204, 86, 153, 0.3)'],
+    purple: ['rgba(192, 132, 252, 0.9)', 'rgba(168, 85, 247, 0.7)', 'rgba(147, 51, 234, 0.5)', 'rgba(126, 34, 206, 0.3)'],
   };
 
   const isImage = icon && typeof icon !== 'string';
@@ -73,15 +73,27 @@ const IconContainer = ({ icon, size = 'medium', glowColor = 'green' }: any) => {
         borderRadius: 16,
       }]}
     >
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0)']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.iconBorder, {
+          width: iconSize,
+          height: iconSize,
+          borderRadius: 16,
+          position: 'absolute',
+        }]}
+      />
       <View style={[styles.iconContainer, {
         width: iconSize - 4,
         height: iconSize - 4,
+        overflow: 'hidden',
       }]}>
         {isImage ? (
           <Image
             source={icon}
-            style={[styles.iconImage, { width: iconSize * 0.65, height: iconSize * 0.65 }]}
-            resizeMode="contain"
+            style={[styles.iconImage, { width: iconSize * 0.95, height: iconSize * 0.95 }]}
+            resizeMode="cover"
           />
         ) : (
           <Text style={[styles.iconEmoji, { fontSize: iconSize * 0.5 }]}>{icon}</Text>
@@ -226,7 +238,7 @@ export default function Learn() {
 
               {selectedLesson?.keyTakeaways && selectedLesson.keyTakeaways.length > 0 && (
                 <View style={styles.takeawaysSection}>
-                  <Text style={styles.takeawaysTitle}>🎯 Key Takeaways</Text>
+                  <Text style={styles.takeawaysTitle}>Key Takeaways</Text>
                   {selectedLesson.keyTakeaways.map((takeaway: string, index: number) => (
                     <View key={index} style={styles.takeawayItem}>
                       <Text style={styles.takeawayBullet}>•</Text>

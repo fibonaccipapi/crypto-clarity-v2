@@ -4,7 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useWallet } from './contexts/WalletContext';
 import quizData from './data/questions.json';
 
-const logoIcon = require('../assets/images/logo.png');
+const blockchainIcon = require('../assets/images/blockchain-icon.png');
+const cryptoIcon = require('../assets/images/crypto-icon.png');
+const defiIcon = require('../assets/images/defi-icon.png');
+const nftIcon = require('../assets/images/nft-icon.png');
+const tradingIcon = require('../assets/images/trading-icon.png');
+const securityIcon = require('../assets/images/security-icon.png');
 
 const GlassCard = ({ children, style }: any) => {
   return (
@@ -41,6 +46,52 @@ const Badge = ({ text, variant = 'green' }: any) => {
   );
 };
 
+const IconContainer = ({ icon, glowColor = 'green' }: any) => {
+  const iconSize = 64;
+
+  const gradientColors: any = {
+    green: ['rgba(102, 255, 153, 0.9)', 'rgba(51, 255, 102, 0.7)', 'rgba(0, 255, 51, 0.5)', 'rgba(0, 170, 34, 0.3)'],
+    pink: ['rgba(255, 153, 221, 0.9)', 'rgba(255, 107, 203, 0.7)', 'rgba(255, 51, 153, 0.5)', 'rgba(204, 86, 153, 0.3)'],
+    purple: ['rgba(192, 132, 252, 0.9)', 'rgba(168, 85, 247, 0.7)', 'rgba(147, 51, 234, 0.5)', 'rgba(126, 34, 206, 0.3)'],
+  };
+
+  return (
+    <LinearGradient
+      colors={gradientColors[glowColor]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[styles.iconBorder, {
+        width: iconSize,
+        height: iconSize,
+        borderRadius: 20,
+      }]}
+    >
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0)']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.iconBorder, {
+          width: iconSize,
+          height: iconSize,
+          borderRadius: 20,
+          position: 'absolute',
+        }]}
+      />
+      <View style={[styles.iconInnerContainer, {
+        width: iconSize - 4,
+        height: iconSize - 4,
+        overflow: 'hidden',
+      }]}>
+        <Image
+          source={icon}
+          style={[styles.iconImage, { width: iconSize * 0.95, height: iconSize * 0.95 }]}
+          resizeMode="cover"
+        />
+      </View>
+    </LinearGradient>
+  );
+};
+
 export default function Quiz() {
   const { addBalance } = useWallet();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
@@ -53,28 +104,16 @@ export default function Quiz() {
   const categories = quizData.categories || [];
   const currentQuestion = selectedCategory?.questions[currentQuestionIndex];
 
-  const renderCategoryIcon = (icon: string | number) => {
-    if (icon === 'logo') {
-      return (
-        <Image
-          source={logoIcon}
-          style={styles.categoryIconImage}
-          resizeMode="contain"
-        />
-      );
-    }
-
-    if (typeof icon !== 'string') {
-      return (
-        <Image
-          source={icon}
-          style={styles.categoryIconImage}
-          resizeMode="contain"
-        />
-      );
-    }
-
-    return <Text style={styles.categoryEmoji}>{icon}</Text>;
+  const getCategoryIcon = (categoryId: number) => {
+    const iconMap: any = {
+      1: blockchainIcon,
+      2: cryptoIcon,
+      3: defiIcon,
+      4: nftIcon,
+      5: tradingIcon,
+      6: securityIcon,
+    };
+    return iconMap[categoryId];
   };
 
   const handleAnswer = (answer: string) => {
@@ -129,11 +168,14 @@ export default function Quiz() {
               >
                 <GlassCard>
                   <View style={styles.categoryCardContent}>
-                    {renderCategoryIcon(category.icon)}
+                    <IconContainer
+                      icon={getCategoryIcon(category.id)}
+                      glowColor={getCategoryColor(index)}
+                    />
                     <Text style={styles.categoryTitle}>{category.title}</Text>
-                    <Badge 
-                      text={`${category.questions.length} QUESTIONS`} 
-                      variant={getCategoryColor(index)} 
+                    <Badge
+                      text={`${category.questions.length} QUESTIONS`}
+                      variant={getCategoryColor(index)}
                     />
                   </View>
                 </GlassCard>
@@ -303,10 +345,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  categoryEmoji: {
-    fontSize: 48,
+  iconBorder: {
+    padding: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  categoryIconImage: {
+  iconInnerContainer: {
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconImage: {
     width: 64,
     height: 64,
   },
