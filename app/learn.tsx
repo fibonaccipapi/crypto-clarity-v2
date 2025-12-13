@@ -47,30 +47,41 @@ const IconContainer = ({ icon, size = 'medium', glowColor = 'green' }: any) => {
     large: 80,
   };
 
-  const colors: any = {
-    green: '#00FF33',
-    pink: '#FF6BCB',
-    purple: '#A855F7',
+  const gradientColors: any = {
+    green: ['#66FF99', '#33FF66', '#00FF33'],
+    pink: ['#FF99DD', '#FF6BCB', '#FF3399'],
+    purple: ['#C084FC', '#A855F7', '#9333EA'],
   };
 
   const isImage = icon && typeof icon !== 'string';
+  const iconSize = sizes[size];
 
   return (
-    <View style={[styles.iconContainer, {
-      width: sizes[size],
-      height: sizes[size],
-      borderColor: colors[glowColor],
-    }]}>
-      {isImage ? (
-        <Image
-          source={icon}
-          style={[styles.iconImage, { width: sizes[size] * 0.7, height: sizes[size] * 0.7 }]}
-          resizeMode="contain"
-        />
-      ) : (
-        <Text style={styles.iconEmoji}>{icon}</Text>
-      )}
-    </View>
+    <LinearGradient
+      colors={gradientColors[glowColor]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[styles.iconBorder, {
+        width: iconSize,
+        height: iconSize,
+        borderRadius: 16,
+      }]}
+    >
+      <View style={[styles.iconContainer, {
+        width: iconSize - 4,
+        height: iconSize - 4,
+      }]}>
+        {isImage ? (
+          <Image
+            source={icon}
+            style={[styles.iconImage, { width: iconSize * 0.65, height: iconSize * 0.65 }]}
+            resizeMode="contain"
+          />
+        ) : (
+          <Text style={[styles.iconEmoji, { fontSize: iconSize * 0.5 }]}>{icon}</Text>
+        )}
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -170,7 +181,6 @@ export default function Learn() {
                       <GlassCard glowColor={category.color}>
                         <View style={styles.lessonCardContent}>
                           <View style={styles.lessonHeader}>
-                            <Text style={styles.lessonEmoji}>{lesson.emoji}</Text>
                             <Badge text={lesson.difficulty.toUpperCase()} variant={category.color} />
                           </View>
                           <Text style={styles.lessonTitle}>{lesson.title}</Text>
@@ -192,16 +202,15 @@ export default function Learn() {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setSelectedLesson(null)}
               >
                 <Text style={styles.closeButtonText}>✕</Text>
               </TouchableOpacity>
 
-              <Text style={styles.modalEmoji}>{selectedLesson?.emoji}</Text>
               <Text style={styles.modalTitle}>{selectedLesson?.title}</Text>
-              
+
               <View style={styles.modalBadges}>
                 <Badge text={selectedLesson?.difficulty.toUpperCase()} variant="green" />
                 <Badge text={selectedLesson?.category.toUpperCase()} variant="purple" />
@@ -274,9 +283,13 @@ const styles = StyleSheet.create({
     fontSize: 12, 
     color: '#777' 
   },
+  iconBorder: {
+    padding: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   iconContainer: {
-    borderRadius: 16,
-    borderWidth: 2,
+    borderRadius: 14,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignItems: 'center',
     justifyContent: 'center',
