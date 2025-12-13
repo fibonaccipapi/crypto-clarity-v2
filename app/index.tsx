@@ -146,14 +146,21 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <View style={styles.logoCircle}>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logoImage}
-              resizeMode="contain"
-            />
-          </View>
-          
+          <LinearGradient
+            colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.logoBorder}
+          >
+            <View style={styles.logoCircle}>
+              <Image
+                source={require('../assets/images/logo.png')}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
+            </View>
+          </LinearGradient>
+
           <View style={styles.headerTextContainer}>
             <Text style={styles.headerTitle}>CRYPTO CLARITY</Text>
             <Text style={styles.headerSubtitle}>DEMYSTIFYING CRYPTO, ONE TERM AT A TIME</Text>
@@ -299,19 +306,26 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     gap: 16,
   },
-  logoCircle: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  logoBorder: {
+    width: 104,
+    height: 104,
+    borderRadius: 52,
+    padding: 2,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  logoCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
   logoImage: {
-    width: 44,
-    height: 44,
+    width: 105,
+    height: 105,
   },
   headerTextContainer: {
     flex: 1,
@@ -366,8 +380,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 999,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 255, 51, 0.5)',
   },
   dailyBadgeText: {
     color: '#00FF33',
@@ -380,8 +392,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 999,
-    borderWidth: 1,
-    borderColor: 'rgba(168, 85, 247, 0.5)',
   },
   categoryPillText: {
     color: '#A855F7',
