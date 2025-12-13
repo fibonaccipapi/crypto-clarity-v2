@@ -65,7 +65,7 @@ export default function ProfileScreen() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const { level, xp, xpForNextLevel } = stats.calculateLevel(balance);
-  const { accuracy, streak, quizzesCompleted } = stats;
+  const { accuracy, streak, quizzesCompleted, bestStreak, quizzesTodayCount, requiredQuizzesForStreak } = stats;
 
   const earnedBadges = BADGES.map(badge => {
     let earned = false;
@@ -233,16 +233,41 @@ export default function ProfileScreen() {
             <ProgressBar progress={(quizzesCompleted / 10) * 100} />
             <Text style={styles.trackerSubtext}>Next milestone: 5 quizzes</Text>
           </View>
-          
+
           <View style={styles.trackerDivider} />
-          
+
           <View style={styles.trackerItem}>
             <View style={styles.trackerHeader}>
               <Text style={styles.trackerLabel}>Current Streak</Text>
               <Text style={styles.trackerValue}>{streak} days</Text>
             </View>
-            <ProgressBar progress={(streak / 7) * 100} color="#FF6BCB" />
-            <Text style={styles.trackerSubtext}>Next milestone: 7 days</Text>
+            <ProgressBar
+              progress={streak >= 30 ? 100 : (streak / (streak < 7 ? 7 : streak < 14 ? 14 : 30)) * 100}
+              color="#FF6BCB"
+            />
+            <Text style={styles.trackerSubtext}>
+              {quizzesTodayCount}/{requiredQuizzesForStreak} quizzes today
+              {streak < 7 && ' • Next milestone: 7 days (2 quizzes/day)'}
+              {streak >= 7 && streak < 14 && ' • Next milestone: 14 days'}
+              {streak >= 14 && streak < 30 && ' • Next milestone: 30 days (3 quizzes/day)'}
+              {streak >= 30 && ' • Master streak! Keep it up!'}
+            </Text>
+          </View>
+
+          <View style={styles.trackerDivider} />
+
+          <View style={styles.trackerItem}>
+            <View style={styles.trackerHeader}>
+              <Text style={styles.trackerLabel}>Best Streak</Text>
+              <Text style={styles.trackerValue}>{bestStreak} days</Text>
+            </View>
+            <ProgressBar
+              progress={(bestStreak / Math.max(30, bestStreak)) * 100}
+              color="#C084FC"
+            />
+            <Text style={styles.trackerSubtext}>
+              {bestStreak === 0 ? 'Complete your first quiz!' : 'Personal record'}
+            </Text>
           </View>
         </GlassCard>
       </View>

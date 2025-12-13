@@ -7,10 +7,13 @@ interface StatsContextType {
   xpForNextLevel: number;
   accuracy: number;
   streak: number;
+  bestStreak: number;
   lastQuizDate: string | null;
   quizzesCompleted: number;
   totalQuestions: number;
   correctAnswers: number;
+  quizzesTodayCount: number;
+  requiredQuizzesForStreak: number;
   updateQuizStats: (correct: number, total: number) => Promise<void>;
   checkStreak: () => Promise<void>;
   calculateLevel: (cccBalance: number) => { level: number; xp: number; xpForNextLevel: number };
@@ -30,12 +33,21 @@ const getTotalXPForLevel = (targetLevel: number): number => {
   return total;
 };
 
+const getRequiredQuizzesForStreak = (currentStreak: number): number => {
+  if (currentStreak >= 30) return 3;
+  if (currentStreak >= 14) return 2;
+  if (currentStreak >= 7) return 2;
+  return 1;
+};
+
 export function StatsProvider({ children }: { children: React.ReactNode }) {
   const [quizzesCompleted, setQuizzesCompleted] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
   const [lastQuizDate, setLastQuizDate] = useState<string | null>(null);
+  const [quizzesTodayCount, setQuizzesTodayCount] = useState(0);
 
   useEffect(() => {
     loadStats();
@@ -47,13 +59,17 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
       const savedTotalQuestions = await AsyncStorage.getItem('@total_questions');
       const savedCorrectAnswers = await AsyncStorage.getItem('@correct_answers');
       const savedStreak = await AsyncStorage.getItem('@streak');
+      const savedBestStreak = await AsyncStorage.getItem('@best_streak');
       const savedLastQuizDate = await AsyncStorage.getItem('@last_quiz_date');
+      const savedQuizzesToday = await AsyncStorage.getItem('@quizzes_today');
 
       if (savedQuizzesCompleted) setQuizzesCompleted(parseInt(savedQuizzesCompleted));
       if (savedTotalQuestions) setTotalQuestions(parseInt(savedTotalQuestions));
       if (savedCorrectAnswers) setCorrectAnswers(parseInt(savedCorrectAnswers));
       if (savedStreak) setStreak(parseInt(savedStreak));
+      if (savedBestStreak) setBestStreak(parseInt(savedBestStreak));
       if (savedLastQuizDate) setLastQuizDate(savedLastQuizDate);
+      if (savedQuizzesToday) setQuizzesTodayCount(parseInt(savedQuizzesToday));
     } catch (error) {
       console.log('Error loading stats:', error);
     }
@@ -81,23 +97,46 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
 
   const checkStreak = async () => {
     const today = new Date().toDateString();
+    let newQuizzesToday = quizzesTodayCount;
 
-    if (lastQuizDate) {
-      const lastDate = new Date(lastQuizDate);
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
+    if (lastQuizDate === today) {
+      newQuizzesToday = quizzesTodayCount + 1;
+    } else {
+      newQuizzesToday = 1;
+    }
 
-      if (lastDate.toDateString() === yesterday.toDateString()) {
-        const newStreak = streak + 1;
-        setStreak(newStreak);
-        await AsyncStorage.setItem('@streak', newStreak.toString());
-      } else if (lastDate.toDateString() !== today) {
+    setQuizzesTodayCount(newQuizzesToday);
+    await AsyncStorage.setItem('@quizzes_today', newQuizzesToday.toString());
+
+    const requiredQuizzes = getRequiredQuizzesForStreak(streak);
+
+    if (newQuizzesToday >= requiredQuizzes) {
+      if (lastQuizDate) {
+        const lastDate = new Date(lastQuizDate);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        if (lastDate.toDateString() === yesterday.toDateString()) {
+          const newStreak = streak + 1;
+          setStreak(newStreak);
+          await AsyncStorage.setItem('@streak', newStreak.toString());
+
+          if (newStreak > bestStreak) {
+            setBestStreak(newStreak);
+            await AsyncStorage.setItem('@best_streak', newStreak.toString());
+          }
+        } else if (lastDate.toDateString() !== today) {
+          setStreak(1);
+          await AsyncStorage.setItem('@streak', '1');
+        }
+      } else {
         setStreak(1);
         await AsyncStorage.setItem('@streak', '1');
+        if (bestStreak === 0) {
+          setBestStreak(1);
+          await AsyncStorage.setItem('@best_streak', '1');
+        }
       }
-    } else {
-      setStreak(1);
-      await AsyncStorage.setItem('@streak', '1');
     }
 
     setLastQuizDate(today);
@@ -123,6 +162,7 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
   const level = 0;
   const xp = 0;
   const xpForNextLevel = getXPForLevel(1);
+  const requiredQuizzesForStreak = getRequiredQuizzesForStreak(streak);
 
   return (
     <StatsContext.Provider
@@ -132,10 +172,13 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
         xpForNextLevel,
         accuracy,
         streak,
+        bestStreak,
         lastQuizDate,
         quizzesCompleted,
         totalQuestions,
         correctAnswers,
+        quizzesTodayCount,
+        requiredQuizzesForStreak,
         updateQuizStats,
         checkStreak,
         calculateLevel,
