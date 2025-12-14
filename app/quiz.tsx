@@ -94,7 +94,7 @@ const IconContainer = ({ icon, glowColor = 'green' }: any) => {
 };
 
 export default function Quiz() {
-  const { addBalance } = useWallet();
+  const { addBalance, connected } = useWallet();
   const stats = useStats();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -144,7 +144,10 @@ export default function Quiz() {
 
     if (answer === currentQuestion.correct) {
       setScore(score + 1);
-      addBalance(10);
+      // Only award CCC if user is connected
+      if (connected) {
+        addBalance(10);
+      }
     }
 
     setTimeout(async () => {
@@ -228,10 +231,22 @@ export default function Quiz() {
               <Text style={styles.resultText}>
                 {score} / {shuffledQuestions.length} correct
               </Text>
-              
-              <View style={styles.rewardBox}>
-                <Text style={styles.rewardText}>+{earnedCCC} CCC</Text>
-              </View>
+
+              {connected ? (
+                <View style={styles.rewardBox}>
+                  <Text style={styles.rewardText}>+{earnedCCC} CCC</Text>
+                </View>
+              ) : (
+                <View style={styles.notConnectedBox}>
+                  <Text style={styles.notConnectedTitle}>🔒 Connect to Earn CCC</Text>
+                  <Text style={styles.notConnectedText}>
+                    You could have earned {earnedCCC} CCC!
+                  </Text>
+                  <Text style={styles.notConnectedSubtext}>
+                    Connect your wallet or sign in to start earning rewards
+                  </Text>
+                </View>
+              )}
 
               <TouchableOpacity style={styles.retryButton} onPress={resetQuiz}>
                 <LinearGradient
@@ -527,6 +542,34 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '900',
     color: '#00FF33',
+  },
+  notConnectedBox: {
+    backgroundColor: 'rgba(255, 107, 203, 0.15)',
+    padding: 20,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 107, 203, 0.3)',
+    marginTop: 8,
+    alignItems: 'center',
+    gap: 8,
+  },
+  notConnectedTitle: {
+    fontSize: 18,
+    fontWeight: '900',
+    color: '#FF6BCB',
+  },
+  notConnectedText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFF',
+    textAlign: 'center',
+  },
+  notConnectedSubtext: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#999',
+    textAlign: 'center',
+    marginTop: 4,
   },
   retryButton: {
     width: '100%',
