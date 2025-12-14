@@ -535,6 +535,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   bottomSpacer: {
-    height: 40,
+    height: 120,
   },
 });
