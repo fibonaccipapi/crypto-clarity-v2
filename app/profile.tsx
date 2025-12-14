@@ -60,13 +60,17 @@ const ProgressBar = ({ progress, color = '#00FF33' }: any) => {
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const wallet = useWallet();
-  const { connected, balance } = wallet;
+  const { connected, balance, address } = wallet;
   const stats = useStats();
   const [profile, setProfile] = useState(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const { level, xp, xpForNextLevel } = stats.calculateLevel(balance);
   const { accuracy, streak, quizzesCompleted, bestStreak, quizzesTodayCount, requiredQuizzesForStreak } = stats;
+
+  const getProfileImageKey = () => {
+    return address ? `${address}_profileImage` : `guest_profileImage`;
+  };
 
   const earnedBadges = BADGES.map(badge => {
     let earned = false;
@@ -91,20 +95,22 @@ export default function ProfileScreen() {
         badges: earnedBadges.filter(b => b.earned),
       });
 
-      const savedImage = await AsyncStorage.getItem('profileImage');
+      const savedImage = await AsyncStorage.getItem(getProfileImageKey());
       if (savedImage) {
         // Clear invalid blob URLs (they don't persist across page reloads)
         if (savedImage.startsWith('blob:')) {
-          await AsyncStorage.removeItem('profileImage');
+          await AsyncStorage.removeItem(getProfileImageKey());
           setProfileImage(null);
         } else {
           setProfileImage(savedImage);
         }
+      } else {
+        setProfileImage(null);
       }
     };
 
     loadProfile();
-  }, [balance, quizzesCompleted, accuracy, streak, level, connected]);
+  }, [balance, quizzesCompleted, accuracy, streak, level, connected, address]);
 
   const handleAvatarPress = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -130,7 +136,7 @@ export default function ProfileScreen() {
         : asset.uri;
 
       setProfileImage(imageData);
-      await AsyncStorage.setItem('profileImage', imageData);
+      await AsyncStorage.setItem(getProfileImageKey(), imageData);
     }
   };
 
@@ -145,7 +151,7 @@ export default function ProfileScreen() {
           style: 'destructive',
           onPress: async () => {
             setProfileImage(null);
-            await AsyncStorage.removeItem('profileImage');
+            await AsyncStorage.removeItem(getProfileImageKey());
           },
         },
       ]
@@ -155,18 +161,17 @@ export default function ProfileScreen() {
   const handleSignOut = () => {
     Alert.alert(
       'Sign Out',
-      'Are you sure you want to sign out? This will disconnect your wallet and reset all data.',
+      'Are you sure you want to sign out? Your data will be saved and available when you log back in.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Sign Out',
           style: 'destructive',
           onPress: async () => {
-            await AsyncStorage.removeItem('profileImage');
-            setProfileImage(null);
-            await stats.resetStats();
+            // Note: We don't clear stats or profile image - they're tied to user ID
+            // They'll be loaded again when user logs back in
             await wallet.resetWallet();
-            Alert.alert('Signed Out', 'You have been signed out successfully.');
+            Alert.alert('Signed Out', 'You have been signed out successfully. Your progress has been saved.');
           },
         },
       ]

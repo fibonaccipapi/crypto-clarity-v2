@@ -4,7 +4,6 @@ import { Platform } from 'react-native';
 import { dynamicClient } from '../lib/dynamicClient';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 
-const BALANCE_KEY = '@ccc_balance';
 const isWeb = Platform.OS === 'web';
 
 interface WalletContextType {
@@ -34,13 +33,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [address, setAddress] = useState<string | null>(null);
 
   useEffect(() => {
-    loadBalance();
-
     if (isWeb) {
       // On web, check if already authenticated
       if (primaryWallet || user) {
+        const userAddress = primaryWallet?.address || user?.email || null;
         setConnected(true);
-        setAddress(primaryWallet?.address || user?.email || null);
+        setAddress(userAddress);
+        loadBalance(userAddress);
       }
     } else {
       // On mobile, listen for auth events
@@ -60,11 +59,26 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
   }, [primaryWallet, user]);
 
-  const loadBalance = async () => {
+  // Load balance when address changes
+  useEffect(() => {
+    if (address) {
+      loadBalance(address);
+    } else {
+      setBalance(0);
+    }
+  }, [address]);
+
+  const getBalanceKey = (userId: string | null) => {
+    return userId ? `${userId}_balance` : `guest_balance`;
+  };
+
+  const loadBalance = async (userId: string | null) => {
     try {
-      const savedBalance = await AsyncStorage.getItem(BALANCE_KEY);
+      const savedBalance = await AsyncStorage.getItem(getBalanceKey(userId));
       if (savedBalance) {
         setBalance(parseInt(savedBalance));
+      } else {
+        setBalance(0);
       }
     } catch (error) {
       console.log('Error loading balance:', error);
@@ -73,7 +87,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const saveBalance = async (newBalance: number) => {
     try {
-      await AsyncStorage.setItem(BALANCE_KEY, newBalance.toString());
+      await AsyncStorage.setItem(getBalanceKey(address), newBalance.toString());
     } catch (error) {
       console.log('Error saving balance:', error);
     }
@@ -129,7 +143,8 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const resetWallet = async () => {
     try {
-      await AsyncStorage.removeItem(BALANCE_KEY);
+      // Note: We don't remove the balance from storage - it stays for when user logs back in
+      // Just reset the current session state
 
       if (isWeb && handleLogOut) {
         await handleLogOut();

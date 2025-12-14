@@ -18,6 +18,7 @@ interface StatsContextType {
   checkStreak: () => Promise<void>;
   calculateLevel: (cccBalance: number) => { level: number; xp: number; xpForNextLevel: number };
   resetStats: () => Promise<void>;
+  userId: string | null;
 }
 
 const StatsContext = createContext<StatsContextType | undefined>(undefined);
@@ -41,7 +42,7 @@ const getRequiredQuizzesForStreak = (currentStreak: number): number => {
   return 1;
 };
 
-export function StatsProvider({ children }: { children: React.ReactNode }) {
+export function StatsProvider({ children, userId }: { children: React.ReactNode; userId: string | null }) {
   const [quizzesCompleted, setQuizzesCompleted] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
@@ -50,27 +51,39 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
   const [lastQuizDate, setLastQuizDate] = useState<string | null>(null);
   const [quizzesTodayCount, setQuizzesTodayCount] = useState(0);
 
+  // Get user-scoped storage keys
+  const getStorageKey = (key: string) => {
+    return userId ? `${userId}_${key}` : `guest_${key}`;
+  };
+
   useEffect(() => {
     loadStats();
-  }, []);
+  }, [userId]); // Reload stats when user changes
 
   const loadStats = async () => {
     try {
-      const savedQuizzesCompleted = await AsyncStorage.getItem('@quizzes_completed');
-      const savedTotalQuestions = await AsyncStorage.getItem('@total_questions');
-      const savedCorrectAnswers = await AsyncStorage.getItem('@correct_answers');
-      const savedStreak = await AsyncStorage.getItem('@streak');
-      const savedBestStreak = await AsyncStorage.getItem('@best_streak');
-      const savedLastQuizDate = await AsyncStorage.getItem('@last_quiz_date');
-      const savedQuizzesToday = await AsyncStorage.getItem('@quizzes_today');
+      const savedQuizzesCompleted = await AsyncStorage.getItem(getStorageKey('quizzes_completed'));
+      const savedTotalQuestions = await AsyncStorage.getItem(getStorageKey('total_questions'));
+      const savedCorrectAnswers = await AsyncStorage.getItem(getStorageKey('correct_answers'));
+      const savedStreak = await AsyncStorage.getItem(getStorageKey('streak'));
+      const savedBestStreak = await AsyncStorage.getItem(getStorageKey('best_streak'));
+      const savedLastQuizDate = await AsyncStorage.getItem(getStorageKey('last_quiz_date'));
+      const savedQuizzesToday = await AsyncStorage.getItem(getStorageKey('quizzes_today'));
 
       if (savedQuizzesCompleted) setQuizzesCompleted(parseInt(savedQuizzesCompleted));
+      else setQuizzesCompleted(0);
       if (savedTotalQuestions) setTotalQuestions(parseInt(savedTotalQuestions));
+      else setTotalQuestions(0);
       if (savedCorrectAnswers) setCorrectAnswers(parseInt(savedCorrectAnswers));
+      else setCorrectAnswers(0);
       if (savedStreak) setStreak(parseInt(savedStreak));
+      else setStreak(0);
       if (savedBestStreak) setBestStreak(parseInt(savedBestStreak));
+      else setBestStreak(0);
       if (savedLastQuizDate) setLastQuizDate(savedLastQuizDate);
+      else setLastQuizDate(null);
       if (savedQuizzesToday) setQuizzesTodayCount(parseInt(savedQuizzesToday));
+      else setQuizzesTodayCount(0);
     } catch (error) {
       console.log('Error loading stats:', error);
     }
@@ -86,9 +99,9 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
     setCorrectAnswers(newCorrectAnswers);
 
     try {
-      await AsyncStorage.setItem('@quizzes_completed', newQuizzesCompleted.toString());
-      await AsyncStorage.setItem('@total_questions', newTotalQuestions.toString());
-      await AsyncStorage.setItem('@correct_answers', newCorrectAnswers.toString());
+      await AsyncStorage.setItem(getStorageKey('quizzes_completed'), newQuizzesCompleted.toString());
+      await AsyncStorage.setItem(getStorageKey('total_questions'), newTotalQuestions.toString());
+      await AsyncStorage.setItem(getStorageKey('correct_answers'), newCorrectAnswers.toString());
     } catch (error) {
       console.log('Error saving quiz stats:', error);
     }
@@ -107,7 +120,7 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
     }
 
     setQuizzesTodayCount(newQuizzesToday);
-    await AsyncStorage.setItem('@quizzes_today', newQuizzesToday.toString());
+    await AsyncStorage.setItem(getStorageKey('quizzes_today'), newQuizzesToday.toString());
 
     const requiredQuizzes = getRequiredQuizzesForStreak(streak);
 
@@ -120,40 +133,40 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
         if (lastDate.toDateString() === yesterday.toDateString()) {
           const newStreak = streak + 1;
           setStreak(newStreak);
-          await AsyncStorage.setItem('@streak', newStreak.toString());
+          await AsyncStorage.setItem(getStorageKey('streak'), newStreak.toString());
 
           if (newStreak > bestStreak) {
             setBestStreak(newStreak);
-            await AsyncStorage.setItem('@best_streak', newStreak.toString());
+            await AsyncStorage.setItem(getStorageKey('best_streak'), newStreak.toString());
           }
         } else if (lastDate.toDateString() !== today) {
           setStreak(1);
-          await AsyncStorage.setItem('@streak', '1');
+          await AsyncStorage.setItem(getStorageKey('streak'), '1');
         }
       } else {
         setStreak(1);
-        await AsyncStorage.setItem('@streak', '1');
+        await AsyncStorage.setItem(getStorageKey('streak'), '1');
         if (bestStreak === 0) {
           setBestStreak(1);
-          await AsyncStorage.setItem('@best_streak', '1');
+          await AsyncStorage.setItem(getStorageKey('best_streak'), '1');
         }
       }
     }
 
     setLastQuizDate(today);
-    await AsyncStorage.setItem('@last_quiz_date', today);
+    await AsyncStorage.setItem(getStorageKey('last_quiz_date'), today);
   };
 
   const resetStats = async () => {
     try {
       await AsyncStorage.multiRemove([
-        '@quizzes_completed',
-        '@total_questions',
-        '@correct_answers',
-        '@streak',
-        '@best_streak',
-        '@last_quiz_date',
-        '@quizzes_today',
+        getStorageKey('quizzes_completed'),
+        getStorageKey('total_questions'),
+        getStorageKey('correct_answers'),
+        getStorageKey('streak'),
+        getStorageKey('best_streak'),
+        getStorageKey('last_quiz_date'),
+        getStorageKey('quizzes_today'),
       ]);
 
       setQuizzesCompleted(0);
@@ -208,6 +221,7 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
         checkStreak,
         calculateLevel,
         resetStats,
+        userId,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { WalletProvider } from './contexts/WalletContext';
+import { WalletProvider, useWallet } from './contexts/WalletContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { StatsProvider } from './contexts/StatsContext';
 import { View, StatusBar, Platform } from 'react-native';
@@ -9,25 +9,33 @@ import { dynamicClient } from './lib/dynamicClient';
 
 const isWeb = Platform.OS === 'web';
 
+function AppContent() {
+  const { address } = useWallet();
+
+  return (
+    <StatsProvider userId={address}>
+      <ThemeProvider>
+        <View style={{ flex: 1, backgroundColor: '#0A0A0F' }}>
+          {!isWeb && <dynamicClient.reactNative.WebView />}
+          <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: '#0A0A0F' },
+              animation: 'fade',
+            }}
+          />
+          <BottomNav />
+        </View>
+      </ThemeProvider>
+    </StatsProvider>
+  );
+}
+
 export default function RootLayout() {
   const content = (
     <WalletProvider>
-      <StatsProvider>
-        <ThemeProvider>
-          <View style={{ flex: 1, backgroundColor: '#0A0A0F' }}>
-            {!isWeb && <dynamicClient.reactNative.WebView />}
-            <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: '#0A0A0F' },
-                animation: 'fade',
-              }}
-            />
-            <BottomNav />
-          </View>
-        </ThemeProvider>
-      </StatsProvider>
+      <AppContent />
     </WalletProvider>
   );
 
