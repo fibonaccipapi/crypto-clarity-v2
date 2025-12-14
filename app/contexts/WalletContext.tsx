@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDynamicContext } from '@dynamic-labs/react-hooks';
 
 const BALANCE_KEY = '@ccc_balance';
 
@@ -19,28 +20,25 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
-  const [connected, setConnected] = useState(false);
-  const [connecting, setConnecting] = useState(false);
-  const [address, setAddress] = useState<string | null>(null);
+  const dynamicContext = useDynamicContext();
+  const { primaryWallet, user, setShowAuthFlow, isAuthenticated } = dynamicContext || {};
+
   const [balance, setBalance] = useState(0);
   const [justConnected, setJustConnected] = useState(false);
 
+  const connected = isAuthenticated || false;
+  const connecting = false;
+  const address = primaryWallet?.address || user?.email || null;
+
   useEffect(() => {
     loadBalance();
-    checkPreviousConnection();
   }, []);
 
-  const checkPreviousConnection = async () => {
-    try {
-      const savedAddress = await AsyncStorage.getItem('@wallet_address');
-      if (savedAddress) {
-        setAddress(savedAddress);
-        setConnected(true);
-      }
-    } catch (error) {
-      console.log('Error checking previous connection:', error);
+  useEffect(() => {
+    if (isAuthenticated && !justConnected) {
+      setJustConnected(true);
     }
-  };
+  }, [isAuthenticated]);
 
   const loadBalance = async () => {
     try {
@@ -62,27 +60,16 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   };
 
   const connect = async () => {
-    setConnecting(true);
-    
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const demoAddress = '0x' + Math.random().toString(36).substring(2, 15).toUpperCase();
-    
-    setAddress(demoAddress);
-    setConnected(true);
-    setConnecting(false);
-    setJustConnected(true);
-    
-    await AsyncStorage.setItem('@wallet_address', demoAddress);
-    
-    console.log('✅ Connected in demo mode');
+    if (setShowAuthFlow) {
+      setShowAuthFlow(true);
+    }
   };
 
   const disconnect = async () => {
-    setConnected(false);
-    setAddress(null);
+    if (dynamicContext?.handleLogOut) {
+      await dynamicContext.handleLogOut();
+    }
     setJustConnected(false);
-    await AsyncStorage.removeItem('@wallet_address');
   };
 
   const addBalance = (amount: number) => {
@@ -97,11 +84,12 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const resetWallet = async () => {
     try {
-      await AsyncStorage.multiRemove(['@wallet_address', BALANCE_KEY]);
-      setConnected(false);
-      setAddress(null);
+      await AsyncStorage.removeItem(BALANCE_KEY);
       setBalance(0);
       setJustConnected(false);
+      if (dynamicContext?.handleLogOut) {
+        await dynamicContext.handleLogOut();
+      }
     } catch (error) {
       console.log('Error resetting wallet:', error);
     }
