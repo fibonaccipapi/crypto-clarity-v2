@@ -93,7 +93,13 @@ export default function ProfileScreen() {
 
       const savedImage = await AsyncStorage.getItem('profileImage');
       if (savedImage) {
-        setProfileImage(savedImage);
+        // Clear invalid blob URLs (they don't persist across page reloads)
+        if (savedImage.startsWith('blob:')) {
+          await AsyncStorage.removeItem('profileImage');
+          setProfileImage(null);
+        } else {
+          setProfileImage(savedImage);
+        }
       }
     };
 
@@ -112,13 +118,19 @@ export default function ProfileScreen() {
       mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.8,
+      quality: 0.5,
+      base64: true,
     });
 
     if (!result.canceled && result.assets[0]) {
-      const imageUri = result.assets[0].uri;
-      setProfileImage(imageUri);
-      await AsyncStorage.setItem('profileImage', imageUri);
+      const asset = result.assets[0];
+      // Use base64 if available, otherwise fall back to URI (will be cleared on reload)
+      const imageData = asset.base64
+        ? `data:image/jpeg;base64,${asset.base64}`
+        : asset.uri;
+
+      setProfileImage(imageData);
+      await AsyncStorage.setItem('profileImage', imageData);
     }
   };
 
