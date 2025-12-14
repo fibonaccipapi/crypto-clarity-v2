@@ -36,6 +36,7 @@ export default function RootLayout() {
       <DynamicContextProvider
         settings={{
           environmentId: '2873c4d4-13c6-4478-866d-e6b9a2177f85',
+          organizationId: '16bf06bb-afdb-4dba-b812-3f2e8f168a08',
           appName: 'Crypto Clarity',
           cssOverrides: `
             .dynamic-widget-modal-overlay {
