@@ -1,11 +1,12 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { useWallet } from './contexts/WalletContext';
 import flashcardsData from './data/flashcards.json';
 
 const flashcardIcon = require('../assets/images/flashcard-icon.png');
 const matchGameIcon = require('../assets/images/games-icon.png');
+const useNativeDriver = Platform.OS !== 'web';
 
 const GAME_TIME_LIMIT = 90;
 
@@ -195,7 +196,7 @@ export default function Games() {
       Animated.timing(v, {
         toValue: selectedTermIndex === i ? 1.06 : 1,
         duration: 180,
-        useNativeDriver: true,
+        useNativeDriver,
       }).start();
     });
   }, [selectedTermIndex, termScales]);
@@ -206,7 +207,7 @@ export default function Games() {
       Animated.timing(v, {
         toValue: selectedDefinitionIndex === i ? 1.06 : 1,
         duration: 180,
-        useNativeDriver: true,
+        useNativeDriver,
       }).start();
     });
   }, [selectedDefinitionIndex, defScales]);
