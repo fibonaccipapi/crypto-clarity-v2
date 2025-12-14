@@ -2,31 +2,60 @@ import { Stack } from 'expo-router';
 import { WalletProvider } from './contexts/WalletContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { StatsProvider } from './contexts/StatsContext';
-import { View, StatusBar } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import { BottomNav } from './components/BottomNav';
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
 import { dynamicClient } from './lib/dynamicClient';
 
+const isWeb = Platform.OS === 'web';
+
 export default function RootLayout() {
-  return (
-    <>
-      <dynamicClient.reactNative.WebView />
-      <WalletProvider>
-        <StatsProvider>
-          <ThemeProvider>
-            <View style={{ flex: 1, backgroundColor: '#0A0A0F' }}>
-              <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  contentStyle: { backgroundColor: '#0A0A0F' },
-                  animation: 'fade',
-                }}
-              />
-              <BottomNav />
-            </View>
-          </ThemeProvider>
-        </StatsProvider>
-      </WalletProvider>
-    </>
+  const content = (
+    <WalletProvider>
+      <StatsProvider>
+        <ThemeProvider>
+          <View style={{ flex: 1, backgroundColor: '#0A0A0F' }}>
+            {!isWeb && <dynamicClient.reactNative.WebView />}
+            <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: '#0A0A0F' },
+                animation: 'fade',
+              }}
+            />
+            <BottomNav />
+          </View>
+        </ThemeProvider>
+      </StatsProvider>
+    </WalletProvider>
   );
+
+  if (isWeb) {
+    return (
+      <DynamicContextProvider
+        settings={{
+          environmentId: '2873c4d4-13c6-4478-866d-e6b9a2177f85',
+          appName: 'Crypto Clarity',
+          cssOverrides: `
+            .dynamic-widget-modal-overlay {
+              background: rgba(0, 0, 0, 0.95);
+            }
+            .dynamic-widget-card {
+              background: linear-gradient(180deg, rgba(30, 30, 35, 0.95), rgba(10, 10, 15, 0.98));
+              border: 1px solid rgba(255, 107, 203, 0.3);
+              border-radius: 20px;
+            }
+            .dynamic-widget-button-primary {
+              background: linear-gradient(135deg, #FF6BCB, rgba(255, 107, 203, 0.8));
+            }
+          `,
+        }}
+      >
+        {content}
+      </DynamicContextProvider>
+    );
+  }
+
+  return content;
 }

@@ -1,8 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { dynamicClient } from '../lib/dynamicClient';
+import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 
 const BALANCE_KEY = '@ccc_balance';
+const isWeb = Platform.OS === 'web';
 
 interface WalletContextType {
   connected: boolean;
@@ -20,6 +23,10 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
+  // Use web SDK context if on web
+  const webContext = isWeb ? useDynamicContext() : null;
+  const { setShowAuthFlow, primaryWallet, user, handleLogOut } = webContext || {};
+
   const [balance, setBalance] = useState(0);
   const [justConnected, setJustConnected] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -29,16 +36,29 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadBalance();
 
-    // Listen for Dynamic auth state changes
-    const unsubscribe = dynamicClient.auth.onAuthSuccess(() => {
-      const user = dynamicClient.auth.getUser();
-      setConnected(true);
-      setAddress(user?.verifiedCredentials?.[0]?.address || user?.email || null);
-      setJustConnected(true);
-    });
+    if (isWeb) {
+      // On web, check if already authenticated
+      if (primaryWallet || user) {
+        setConnected(true);
+        setAddress(primaryWallet?.address || user?.email || null);
+      }
+    } else {
+      // On mobile, listen for auth events
+      const unsubscribe = dynamicClient.auth.on('authSuccess', (authToken) => {
+        console.log('Auth success!', authToken);
+        setConnected(true);
+        setJustConnected(true);
 
-    return () => unsubscribe();
-  }, []);
+        dynamicClient.auth.refreshUser().then(() => {
+          console.log('User refreshed');
+        });
+      });
+
+      return () => {
+        dynamicClient.auth.off('authSuccess', unsubscribe);
+      };
+    }
+  }, [primaryWallet, user]);
 
   const loadBalance = async () => {
     try {
@@ -62,17 +82,33 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const connect = async () => {
     try {
       setConnecting(true);
-      await dynamicClient.auth.login();
+
+      if (isWeb && setShowAuthFlow) {
+        // Use web SDK
+        setShowAuthFlow(true);
+      } else {
+        // Use mobile SDK
+        dynamicClient.ui.auth.show();
+      }
     } catch (error) {
       console.log('Error connecting:', error);
     } finally {
-      setConnecting(false);
+      if (isWeb) {
+        setConnecting(false);
+      }
     }
   };
 
   const disconnect = async () => {
     try {
-      await dynamicClient.auth.logout();
+      if (isWeb && handleLogOut) {
+        // Use web SDK
+        await handleLogOut();
+      } else {
+        // Use mobile SDK
+        await dynamicClient.auth.logout();
+      }
+
       setConnected(false);
       setAddress(null);
       setJustConnected(false);
@@ -94,7 +130,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const resetWallet = async () => {
     try {
       await AsyncStorage.removeItem(BALANCE_KEY);
-      await dynamicClient.auth.logout();
+
+      if (isWeb && handleLogOut) {
+        await handleLogOut();
+      } else {
+        await dynamicClient.auth.logout();
+      }
+
       setConnected(false);
       setAddress(null);
       setBalance(0);
