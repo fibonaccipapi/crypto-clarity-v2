@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@dynamic-labs/client": "^4.50.3",
+    "@dynamic-labs/ethereum": "^4.50.3",
     "@dynamic-labs/react-hooks": "^4.50.3",
     "@dynamic-labs/react-native-extension": "^4.50.3",
     "@dynamic-labs/sdk-react-core": "^4.50.3",
+    "@dynamic-labs/solana": "^4.50.3",
     "@dynamic-labs/solana-extension": "^4.50.3",
     "@dynamic-labs/viem-extension": "^4.50.3",
     "@dynamic-labs/zerodev-extension": "^4.50.3",
