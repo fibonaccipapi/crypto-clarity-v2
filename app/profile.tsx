@@ -158,26 +158,6 @@ export default function ProfileScreen() {
     );
   };
 
-  const handleSignOut = () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out? Your data will be saved and available when you log back in.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: async () => {
-            // Note: We don't clear stats or profile image - they're tied to user ID
-            // They'll be loaded again when user logs back in
-            await wallet.resetWallet();
-            Alert.alert('Signed Out', 'You have been signed out successfully. Your progress has been saved.');
-          },
-        },
-      ]
-    );
-  };
-
   if (!profile) {
     return (
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -336,13 +316,6 @@ export default function ProfileScreen() {
             </GlassCard>
           ))}
         </View>
-      </View>
-
-      <View style={styles.signOutSection}>
-        <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-          <Text style={styles.signOutText}>Sign out</Text>
-        </TouchableOpacity>
-        <Text style={styles.footerDate}>Nov 20</Text>
       </View>
 
       <View style={styles.bottomSpacer} />
@@ -560,25 +533,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#BBB',
     lineHeight: 18,
-  },
-  signOutSection: {
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  signOutButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-  },
-  signOutText: {
-    color: '#FF6B6B',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  footerDate: {
-    color: '#777',
-    fontSize: 12,
-    marginTop: 8,
   },
   bottomSpacer: {
     height: 40,
