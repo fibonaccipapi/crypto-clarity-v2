@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDynamicContext } from '@dynamic-labs/react-hooks';
+import { dynamicClient } from '../lib/dynamicClient';
 
 const BALANCE_KEY = '@ccc_balance';
 
@@ -20,25 +20,25 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
-  const dynamicContext = useDynamicContext();
-  const { primaryWallet, user, setShowAuthFlow, isAuthenticated } = dynamicContext || {};
-
   const [balance, setBalance] = useState(0);
   const [justConnected, setJustConnected] = useState(false);
-
-  const connected = isAuthenticated || false;
-  const connecting = false;
-  const address = primaryWallet?.address || user?.email || null;
+  const [connected, setConnected] = useState(false);
+  const [connecting, setConnecting] = useState(false);
+  const [address, setAddress] = useState<string | null>(null);
 
   useEffect(() => {
     loadBalance();
-  }, []);
 
-  useEffect(() => {
-    if (isAuthenticated && !justConnected) {
+    // Listen for Dynamic auth state changes
+    const unsubscribe = dynamicClient.auth.onAuthSuccess(() => {
+      const user = dynamicClient.auth.getUser();
+      setConnected(true);
+      setAddress(user?.verifiedCredentials?.[0]?.address || user?.email || null);
       setJustConnected(true);
-    }
-  }, [isAuthenticated]);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const loadBalance = async () => {
     try {
@@ -60,16 +60,25 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   };
 
   const connect = async () => {
-    if (setShowAuthFlow) {
-      setShowAuthFlow(true);
+    try {
+      setConnecting(true);
+      await dynamicClient.auth.login();
+    } catch (error) {
+      console.log('Error connecting:', error);
+    } finally {
+      setConnecting(false);
     }
   };
 
   const disconnect = async () => {
-    if (dynamicContext?.handleLogOut) {
-      await dynamicContext.handleLogOut();
+    try {
+      await dynamicClient.auth.logout();
+      setConnected(false);
+      setAddress(null);
+      setJustConnected(false);
+    } catch (error) {
+      console.log('Error disconnecting:', error);
     }
-    setJustConnected(false);
   };
 
   const addBalance = (amount: number) => {
@@ -85,11 +94,11 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const resetWallet = async () => {
     try {
       await AsyncStorage.removeItem(BALANCE_KEY);
+      await dynamicClient.auth.logout();
+      setConnected(false);
+      setAddress(null);
       setBalance(0);
       setJustConnected(false);
-      if (dynamicContext?.handleLogOut) {
-        await dynamicContext.handleLogOut();
-      }
     } catch (error) {
       console.log('Error resetting wallet:', error);
     }
