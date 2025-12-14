@@ -59,7 +59,8 @@ const ProgressBar = ({ progress, color = '#00FF33' }: any) => {
 
 export default function ProfileScreen() {
   const { theme } = useTheme();
-  const { connected, balance } = useWallet();
+  const wallet = useWallet();
+  const { connected, balance } = wallet;
   const stats = useStats();
   const [profile, setProfile] = useState(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -140,10 +141,24 @@ export default function ProfileScreen() {
   };
 
   const handleSignOut = () => {
-    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Sign Out', style: 'destructive' },
-    ]);
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out? This will disconnect your wallet and reset all data.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            await AsyncStorage.removeItem('profileImage');
+            setProfileImage(null);
+            await stats.resetStats();
+            await wallet.resetWallet();
+            Alert.alert('Signed Out', 'You have been signed out successfully.');
+          },
+        },
+      ]
+    );
   };
 
   if (!profile) {

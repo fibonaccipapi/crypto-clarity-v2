@@ -13,6 +13,7 @@ interface WalletContextType {
   addBalance: (amount: number) => void;
   justConnected: boolean;
   clearJustConnected: () => void;
+  resetWallet: () => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -94,6 +95,18 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     setJustConnected(false);
   };
 
+  const resetWallet = async () => {
+    try {
+      await AsyncStorage.multiRemove(['@wallet_address', BALANCE_KEY]);
+      setConnected(false);
+      setAddress(null);
+      setBalance(0);
+      setJustConnected(false);
+    } catch (error) {
+      console.log('Error resetting wallet:', error);
+    }
+  };
+
   return (
     <WalletContext.Provider
       value={{
@@ -106,6 +119,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         addBalance,
         justConnected,
         clearJustConnected,
+        resetWallet,
       }}
     >
       {children}

@@ -17,6 +17,7 @@ interface StatsContextType {
   updateQuizStats: (correct: number, total: number) => Promise<void>;
   checkStreak: () => Promise<void>;
   calculateLevel: (cccBalance: number) => { level: number; xp: number; xpForNextLevel: number };
+  resetStats: () => Promise<void>;
 }
 
 const StatsContext = createContext<StatsContextType | undefined>(undefined);
@@ -143,6 +144,30 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
     await AsyncStorage.setItem('@last_quiz_date', today);
   };
 
+  const resetStats = async () => {
+    try {
+      await AsyncStorage.multiRemove([
+        '@quizzes_completed',
+        '@total_questions',
+        '@correct_answers',
+        '@streak',
+        '@best_streak',
+        '@last_quiz_date',
+        '@quizzes_today',
+      ]);
+
+      setQuizzesCompleted(0);
+      setTotalQuestions(0);
+      setCorrectAnswers(0);
+      setStreak(0);
+      setBestStreak(0);
+      setLastQuizDate(null);
+      setQuizzesTodayCount(0);
+    } catch (error) {
+      console.log('Error resetting stats:', error);
+    }
+  };
+
   const calculateLevel = (cccBalance: number) => {
     let level = 0;
     let remainingXP = cccBalance;
@@ -182,6 +207,7 @@ export function StatsProvider({ children }: { children: React.ReactNode }) {
         updateQuizStats,
         checkStreak,
         calculateLevel,
+        resetStats,
       }}
     >
       {children}
