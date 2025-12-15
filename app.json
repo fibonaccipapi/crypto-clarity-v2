@@ -13,9 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fibonaccifirm.cryptoclarity"
     },
     "android": {
+      "package": "com.fibonaccifirm.cryptoclarity",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -29,6 +31,13 @@
     "plugins": [
       "expo-router",
       "expo-web-browser"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6385eb6a-7203-4a3c-aad1-f4e56c3cf9f4"
+      }
+    },
+    "owner": "fibonaccifirm"
   }
 }
