@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ui",
-    "slug": "ui",
+    "name": "Crypto Clarity",
+    "slug": "crypto-clarity",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
