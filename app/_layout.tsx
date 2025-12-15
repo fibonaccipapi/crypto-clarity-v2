@@ -5,8 +5,6 @@ import { StatsProvider } from './contexts/StatsContext';
 import { View, StatusBar, Platform } from 'react-native';
 import { BottomNav } from './components/BottomNav';
 import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
-import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
-import { SolanaWalletConnectors } from '@dynamic-labs/solana';
 import { dynamicClient } from './lib/dynamicClient';
 
 const isWeb = Platform.OS === 'web';
@@ -48,10 +46,6 @@ export default function RootLayout() {
           environmentId: '2873c4d4-13c6-4478-866d-e6b9a2177f85',
           organizationId: '16bf06bb-afdb-4dba-b812-3f2e8f168a08',
           appName: 'Crypto Clarity',
-          walletConnectors: [
-            EthereumWalletConnectors,
-            SolanaWalletConnectors,
-          ],
           cssOverrides: `
             .dynamic-widget-modal-overlay {
               background: rgba(0, 0, 0, 0.95);
