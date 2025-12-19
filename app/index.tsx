@@ -1,10 +1,11 @@
-import { View, Text, ScrollView, TouchableOpacity, Modal, StyleSheet, AppState, Image } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Modal, StyleSheet, AppState, Image, Platform } from 'react-native';
 import { Link } from 'expo-router';
 import { useState, useEffect, useRef } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { WalletButton } from './components/WalletButton';
 import { CCCBalance } from './components/CCCBalance';
 import { useWallet } from './contexts/WalletContext';
+import { dynamicClient } from './lib/dynamicClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dailyTermsData from './data/dailyTerms.json';
 
@@ -40,6 +41,18 @@ export default function HomeScreen() {
   const [dailyTerm, setDailyTerm] = useState(dailyTermsData.terms[0]);
   const refreshTimeoutRef = useRef<any>(null);
   const refreshIntervalRef = useRef<any>(null);
+
+  const handleAlternateConnect = () => {
+    try {
+      if (Platform.OS === 'web') {
+        dynamicClient?.ui?.auth?.show?.();
+      } else {
+        dynamicClient.ui.auth.show();
+      }
+    } catch (error) {
+      console.log('Alternate connect error:', error);
+    }
+  };
 
   useEffect(() => {
     loadDailyTerm();
@@ -170,6 +183,24 @@ export default function HomeScreen() {
         <View style={styles.walletSection}>
           {connected && <CCCBalance />}
           <WalletButton />
+          {!connected && (
+            <TouchableOpacity style={styles.altConnectWrapper} onPress={handleAlternateConnect}>
+              <LinearGradient
+                colors={['rgba(0, 255, 51, 0.9)', 'rgba(0, 200, 40, 0.9)', 'rgba(0, 150, 30, 0.85)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.altConnectButton}
+              >
+                <LinearGradient
+                  colors={['rgba(255, 255, 255, 0.25)', 'rgba(255, 255, 255, 0.12)', 'rgba(255, 255, 255, 0)']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.altConnectShine}
+                />
+                <Text style={styles.altConnectText}>Alt Connect</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={styles.dailyTermContainer}>
@@ -349,6 +380,32 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
     marginBottom: 24,
+  },
+  altConnectWrapper: {
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  altConnectButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 16,
+    position: 'relative',
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 255, 51, 0.4)',
+  },
+  altConnectShine: {
+    position: 'absolute',
+    top: -10,
+    left: -10,
+    width: '70%',
+    height: '70%',
+  },
+  altConnectText: {
+    color: '#000',
+    fontSize: 13,
+    fontWeight: '900',
+    letterSpacing: 0.4,
   },
   dailyTermContainer: {
     marginHorizontal: 20,
