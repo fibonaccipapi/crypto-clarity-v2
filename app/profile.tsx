@@ -340,18 +340,18 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   glassCard: {
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.4)',
+    borderRadius: 28,
+    borderWidth: 0,
     overflow: 'hidden',
     position: 'relative',
   },
   diagonalShine: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
+    top: -20,
+    left: -20,
+    width: '60%',
+    height: '60%',
+    borderTopLeftRadius: 28,
   },
   profileSection: {
     paddingHorizontal: 20,
@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
   badgeStatus: {
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: 999,
   },
   badgeStatusText: {
     fontSize: 12,

@@ -70,7 +70,7 @@ const IconContainer = ({ icon, size = 'medium', glowColor = 'green' }: any) => {
       style={[styles.iconBorder, {
         width: iconSize,
         height: iconSize,
-        borderRadius: 16,
+        borderRadius: 22,
       }]}
     >
       <LinearGradient
@@ -80,7 +80,7 @@ const IconContainer = ({ icon, size = 'medium', glowColor = 'green' }: any) => {
         style={[styles.iconBorder, {
           width: iconSize,
           height: iconSize,
-          borderRadius: 16,
+          borderRadius: 22,
           position: 'absolute',
         }]}
       />
@@ -88,6 +88,7 @@ const IconContainer = ({ icon, size = 'medium', glowColor = 'green' }: any) => {
         width: iconSize - 4,
         height: iconSize - 4,
         overflow: 'hidden',
+        borderRadius: 20,
       }]}>
         {isImage ? (
           <Image
@@ -307,7 +308,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconContainer: {
-    borderRadius: 14,
+    borderRadius: 20,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
   badge: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 10,
+    borderRadius: 999,
   },
   badgeText: {
     fontSize: 10,
@@ -336,9 +337,8 @@ const styles = StyleSheet.create({
     width: '100%' 
   },
   glassCardBase: {
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.4)',
+    borderRadius: 28,
+    borderWidth: 0,
     overflow: 'hidden',
     position: 'relative',
   },
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     left: -20,
     width: '60%',
     height: '60%',
-    borderTopLeftRadius: 20,
+    borderTopLeftRadius: 28,
   },
   lessonCardContent: {
     padding: 18,
