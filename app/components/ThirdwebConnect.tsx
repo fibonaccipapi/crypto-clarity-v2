@@ -30,6 +30,12 @@ export function ThirdwebConnect() {
     <ConnectButton
       client={client}
       connectModal={{ showThirdwebBranding: false, size: 'compact' }}
+      detailsModal={{
+        showThirdwebBranding: false,
+      }}
+      detailsButton={{
+        displayBalanceToken: undefined,
+      }}
       theme={darkTheme({
         colors: {
           selectedTextColor: 'hsl(132, 100%, 50%)',
