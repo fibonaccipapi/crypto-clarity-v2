@@ -4,10 +4,13 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { StatsProvider } from './contexts/StatsContext';
 import { View, StatusBar, Platform } from 'react-native';
 import { BottomNav } from './components/BottomNav';
-import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
+import { DynamicContextProvider, DynamicWidget } from '@dynamic-labs/sdk-react-core';
 import { dynamicClient } from './lib/dynamicClient';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThirdwebProvider } from 'thirdweb/react';
 
 const isWeb = Platform.OS === 'web';
+const queryClient = new QueryClient();
 
 function AppContent() {
   const { address } = useWallet();
@@ -34,9 +37,13 @@ function AppContent() {
 
 export default function RootLayout() {
   const content = (
-    <WalletProvider>
-      <AppContent />
-    </WalletProvider>
+    <ThirdwebProvider>
+      <QueryClientProvider client={queryClient}>
+        <WalletProvider>
+          <AppContent />
+        </WalletProvider>
+      </QueryClientProvider>
+    </ThirdwebProvider>
   );
 
   if (isWeb) {
@@ -62,6 +69,7 @@ export default function RootLayout() {
         }}
       >
         {content}
+        <DynamicWidget />
       </DynamicContextProvider>
     );
   }

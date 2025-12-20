@@ -1,14 +1,10 @@
 import { ConnectButton, darkTheme } from 'thirdweb/react';
 import { createThirdwebClient } from 'thirdweb';
 import { inAppWallet, createWallet } from 'thirdweb/wallets';
+import { Text } from 'react-native';
 
 const clientId = process.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID;
-
-if (!clientId) {
-  console.warn('Missing EXPO_PUBLIC_THIRDWEB_CLIENT_ID for thirdweb ConnectButton');
-}
-
-const client = createThirdwebClient({ clientId: clientId || '' });
+const client = clientId ? createThirdwebClient({ clientId }) : null;
 
 const wallets = [
   inAppWallet({
@@ -24,6 +20,12 @@ const wallets = [
 ];
 
 export function ThirdwebConnect() {
+  if (!client) {
+    // Avoid runtime crash if env var is missing; render a small hint instead.
+    console.warn('Missing EXPO_PUBLIC_THIRDWEB_CLIENT_ID for thirdweb ConnectButton');
+    return <Text style={{ color: '#fff' }}>Connect unavailable: missing client id</Text>;
+  }
+
   return (
     <ConnectButton
       client={client}

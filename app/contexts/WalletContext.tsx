@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { dynamicClient } from '../lib/dynamicClient';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
+import { useActiveAccount, useDisconnect } from 'thirdweb/react';
 
 const isWeb = Platform.OS === 'web';
 
@@ -22,9 +23,13 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
-  // Use web SDK context if on web
+  // Dynamic Labs context (if on web)
   const webContext = isWeb ? useDynamicContext() : null;
   const { setShowAuthFlow, primaryWallet, user, handleLogOut } = webContext || {};
+
+  // Thirdweb hooks
+  const thirdwebAccount = useActiveAccount();
+  const { disconnect: thirdwebDisconnect } = useDisconnect();
 
   const [balance, setBalance] = useState(0);
   const [justConnected, setJustConnected] = useState(false);
@@ -33,18 +38,33 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [address, setAddress] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check Thirdweb authentication first (works on all platforms)
+    if (thirdwebAccount?.address) {
+      console.log('Thirdweb account connected:', thirdwebAccount.address);
+      setConnected(true);
+      setAddress(thirdwebAccount.address);
+      setJustConnected(true);
+      loadBalance(thirdwebAccount.address);
+      return;
+    }
+
     if (isWeb) {
-      // On web, check if already authenticated
+      // On web, check Dynamic Labs authentication
       if (primaryWallet || user) {
         const userAddress = primaryWallet?.address || user?.email || null;
+        console.log('Dynamic Labs account connected:', userAddress);
         setConnected(true);
         setAddress(userAddress);
         loadBalance(userAddress);
+      } else {
+        // No wallet connected
+        setConnected(false);
+        setAddress(null);
       }
     } else {
-      // On mobile, listen for auth events
+      // On mobile, listen for Dynamic auth events
       const unsubscribe = dynamicClient.auth.on('authSuccess', (authToken) => {
-        console.log('Auth success!', authToken);
+        console.log('Dynamic auth success!', authToken);
         setConnected(true);
         setJustConnected(true);
 
@@ -57,7 +77,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         dynamicClient.auth.off('authSuccess', unsubscribe);
       };
     }
-  }, [primaryWallet, user]);
+  }, [thirdwebAccount, primaryWallet, user]);
 
   // Load balance when address changes
   useEffect(() => {

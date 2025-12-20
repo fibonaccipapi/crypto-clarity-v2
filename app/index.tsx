@@ -43,17 +43,6 @@ export default function HomeScreen() {
   const refreshTimeoutRef = useRef<any>(null);
   const refreshIntervalRef = useRef<any>(null);
 
-  const handleAlternateConnect = () => {
-    try {
-      if (Platform.OS === 'web') {
-        dynamicClient?.ui?.auth?.show?.();
-      } else {
-        dynamicClient.ui.auth.show();
-      }
-    } catch (error) {
-      console.log('Alternate connect error:', error);
-    }
-  };
 
   useEffect(() => {
     loadDailyTerm();
@@ -184,24 +173,6 @@ export default function HomeScreen() {
         <View style={styles.walletSection}>
           {connected && <CCCBalance />}
           <WalletButton />
-          {!connected && (
-            <TouchableOpacity style={styles.altConnectWrapper} onPress={handleAlternateConnect}>
-              <LinearGradient
-                colors={['rgba(0, 255, 51, 0.9)', 'rgba(0, 200, 40, 0.9)', 'rgba(0, 150, 30, 0.85)']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.altConnectButton}
-              >
-                <LinearGradient
-                  colors={['rgba(255, 255, 255, 0.25)', 'rgba(255, 255, 255, 0.12)', 'rgba(255, 255, 255, 0)']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.altConnectShine}
-                />
-                <Text style={styles.altConnectText}>Alt Connect</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          )}
           {!connected && (
             <View style={styles.thirdwebWrapper}>
               <ThirdwebConnect />
@@ -386,32 +357,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
     marginBottom: 24,
-  },
-  altConnectWrapper: {
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  altConnectButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 16,
-    position: 'relative',
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 255, 51, 0.4)',
-  },
-  altConnectShine: {
-    position: 'absolute',
-    top: -10,
-    left: -10,
-    width: '70%',
-    height: '70%',
-  },
-  altConnectText: {
-    color: '#000',
-    fontSize: 13,
-    fontWeight: '900',
-    letterSpacing: 0.4,
   },
   thirdwebWrapper: {
     paddingVertical: 4,
