@@ -6,6 +6,7 @@ import { WalletButton } from './components/WalletButton';
 import { CCCBalance } from './components/CCCBalance';
 import { useWallet } from './contexts/WalletContext';
 import { dynamicClient } from './lib/dynamicClient';
+import { ThirdwebConnect } from './components/ThirdwebConnect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dailyTermsData from './data/dailyTerms.json';
 
@@ -200,6 +201,11 @@ export default function HomeScreen() {
                 <Text style={styles.altConnectText}>Alt Connect</Text>
               </LinearGradient>
             </TouchableOpacity>
+          )}
+          {!connected && (
+            <View style={styles.thirdwebWrapper}>
+              <ThirdwebConnect />
+            </View>
           )}
         </View>
 
@@ -406,6 +412,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '900',
     letterSpacing: 0.4,
+  },
+  thirdwebWrapper: {
+    paddingVertical: 4,
   },
   dailyTermContainer: {
     marginHorizontal: 20,
