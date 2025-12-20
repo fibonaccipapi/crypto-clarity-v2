@@ -135,11 +135,18 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const disconnect = async () => {
     try {
+      // Disconnect from Thirdweb if connected
+      if (thirdwebAccount) {
+        console.log('Disconnecting from Thirdweb...');
+        await thirdwebDisconnect();
+      }
+
+      // Disconnect from Dynamic Labs if connected
       if (isWeb && handleLogOut) {
-        // Use web SDK
+        console.log('Disconnecting from Dynamic Labs (web)...');
         await handleLogOut();
-      } else {
-        // Use mobile SDK
+      } else if (!isWeb) {
+        console.log('Disconnecting from Dynamic Labs (mobile)...');
         await dynamicClient.auth.logout();
       }
 
@@ -166,9 +173,18 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       // Note: We don't remove the balance from storage - it stays for when user logs back in
       // Just reset the current session state
 
+      // Disconnect from Thirdweb if connected
+      if (thirdwebAccount) {
+        console.log('Resetting Thirdweb wallet...');
+        await thirdwebDisconnect();
+      }
+
+      // Disconnect from Dynamic Labs if connected
       if (isWeb && handleLogOut) {
+        console.log('Resetting Dynamic Labs wallet (web)...');
         await handleLogOut();
-      } else {
+      } else if (!isWeb) {
+        console.log('Resetting Dynamic Labs wallet (mobile)...');
         await dynamicClient.auth.logout();
       }
 
