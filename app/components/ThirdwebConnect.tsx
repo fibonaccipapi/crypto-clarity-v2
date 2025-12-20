@@ -1,5 +1,6 @@
-import { ConnectButton } from 'thirdweb/react';
+import { ConnectButton, darkTheme } from 'thirdweb/react';
 import { createThirdwebClient } from 'thirdweb';
+import { inAppWallet, createWallet } from 'thirdweb/wallets';
 
 const clientId = process.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID;
 
@@ -9,34 +10,45 @@ if (!clientId) {
 
 const client = createThirdwebClient({ clientId: clientId || '' });
 
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: ['google', 'discord', 'telegram', 'farcaster', 'email', 'x', 'phone'],
+    },
+  }),
+  createWallet('io.metamask'),
+  createWallet('com.coinbase.wallet'),
+  createWallet('me.rainbow'),
+  createWallet('io.rabby'),
+  createWallet('io.zerion.wallet'),
+];
+
 export function ThirdwebConnect() {
   return (
     <ConnectButton
       client={client}
-      auth={{
-        // TODO: wire these to your backend endpoints for session-based auth
-        getLoginPayload: async ({ address }) => {
-          return {
-            message: `Login ${address}`,
-            uri: '',
-            version: '1',
-            chain_id: '1',
-            nonce: '0',
-            issued_at: new Date().toISOString(),
-          } as any;
+      connectModal={{ showThirdwebBranding: false, size: 'compact' }}
+      theme={darkTheme({
+        colors: {
+          selectedTextColor: 'hsl(132, 100%, 50%)',
+          selectedTextBg: 'hsl(0, 0%, 0%)',
+          accentText: 'hsl(132, 100%, 50%)',
+          separatorLine: 'hsl(321, 100%, 71%)',
+          tertiaryBg: 'hsl(0, 0%, 11%)',
+          borderColor: 'hsl(321, 100%, 71%)',
+          accentButtonBg: 'hsl(321, 100%, 71%)',
+          accentButtonText: 'hsl(0, 0%, 100%)',
+          primaryButtonBg: 'hsl(271, 91%, 65%)',
+          primaryButtonText: 'hsl(0, 0%, 100%)',
+          secondaryButtonHoverBg: 'hsl(132, 100%, 50%)',
+          connectedButtonBg: 'hsl(132, 100%, 50%)',
+          secondaryIconColor: 'hsl(321, 100%, 71%)',
+          secondaryIconHoverColor: 'hsl(271, 91%, 65%)',
+          secondaryIconHoverBg: 'hsl(132, 100%, 50%)',
+          scrollbarBg: 'hsl(0, 0%, 11%)',
         },
-        doLogin: async () => {
-          // send signed payload to your backend to verify
-          return { ok: true } as any;
-        },
-        isLoggedIn: async () => {
-          // ask backend if user session is active
-          return false;
-        },
-        doLogout: async () => {
-          // tell backend to clear session
-        },
-      }}
+      })}
+      wallets={wallets}
     />
   );
 }
