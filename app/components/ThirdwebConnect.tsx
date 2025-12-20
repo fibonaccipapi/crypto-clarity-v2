@@ -1,7 +1,7 @@
-import { ConnectButton, darkTheme } from 'thirdweb/react';
+import { ConnectButton, darkTheme, useActiveAccount, useDisconnect } from 'thirdweb/react';
 import { createThirdwebClient } from 'thirdweb';
 import { inAppWallet, createWallet } from 'thirdweb/wallets';
-import { Text } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const clientId = process.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID;
 const client = clientId ? createThirdwebClient({ clientId }) : null;
@@ -20,22 +20,31 @@ const wallets = [
 ];
 
 export function ThirdwebConnect() {
+  const account = useActiveAccount();
+  const { disconnect } = useDisconnect();
+
   if (!client) {
-    // Avoid runtime crash if env var is missing; render a small hint instead.
     console.warn('Missing EXPO_PUBLIC_THIRDWEB_CLIENT_ID for thirdweb ConnectButton');
     return <Text style={{ color: '#fff' }}>Connect unavailable: missing client id</Text>;
   }
 
+  // If connected, show disconnect button
+  if (account) {
+    return (
+      <TouchableOpacity
+        onPress={() => disconnect()}
+        style={styles.disconnectButton}
+      >
+        <Text style={styles.disconnectText}>Disconnect</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  // If not connected, show connect button
   return (
     <ConnectButton
       client={client}
       connectModal={{ showThirdwebBranding: false, size: 'compact' }}
-      detailsModal={{
-        showThirdwebBranding: false,
-      }}
-      detailsButton={{
-        displayBalanceToken: undefined,
-      }}
       theme={darkTheme({
         colors: {
           selectedTextColor: 'hsl(132, 100%, 50%)',
@@ -60,3 +69,20 @@ export function ThirdwebConnect() {
     />
   );
 }
+
+const styles = StyleSheet.create({
+  disconnectButton: {
+    backgroundColor: '#FF6BCB',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 107, 203, 0.4)',
+  },
+  disconnectText: {
+    color: '#000',
+    fontSize: 13,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+});
