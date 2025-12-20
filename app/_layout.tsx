@@ -4,7 +4,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { StatsProvider } from './contexts/StatsContext';
 import { View, StatusBar, Platform } from 'react-native';
 import { BottomNav } from './components/BottomNav';
-import { DynamicContextProvider, DynamicWidget } from '@dynamic-labs/sdk-react-core';
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
 import { dynamicClient } from './lib/dynamicClient';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThirdwebProvider } from 'thirdweb/react';
@@ -69,7 +69,6 @@ export default function RootLayout() {
         }}
       >
         {content}
-        <DynamicWidget />
       </DynamicContextProvider>
     );
   }
