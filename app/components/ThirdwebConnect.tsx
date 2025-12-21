@@ -1,7 +1,8 @@
-import { ConnectButton, darkTheme, useActiveAccount, useDisconnect } from 'thirdweb/react';
+import { ConnectButton, darkTheme, useActiveAccount } from 'thirdweb/react';
 import { createThirdwebClient } from 'thirdweb';
 import { inAppWallet, createWallet } from 'thirdweb/wallets';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useWallet } from '../contexts/WalletContext';
 
 const clientId = process.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID;
 const client = clientId ? createThirdwebClient({ clientId }) : null;
@@ -21,15 +22,15 @@ const wallets = [
 
 export function ThirdwebConnect() {
   const account = useActiveAccount();
-  const { disconnect } = useDisconnect();
+  const { disconnect, connected } = useWallet();
 
   if (!client) {
     console.warn('Missing EXPO_PUBLIC_THIRDWEB_CLIENT_ID for thirdweb ConnectButton');
     return <Text style={{ color: '#fff' }}>Connect unavailable: missing client id</Text>;
   }
 
-  // If connected, show disconnect button
-  if (account) {
+  // If connected (check both Thirdweb account AND WalletContext state), show disconnect button
+  if (account && connected) {
     return (
       <TouchableOpacity
         onPress={() => disconnect()}

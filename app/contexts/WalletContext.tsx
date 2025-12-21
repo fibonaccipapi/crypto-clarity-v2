@@ -138,7 +138,12 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       // Disconnect from Thirdweb if connected
       if (thirdwebAccount) {
         console.log('Disconnecting from Thirdweb...');
-        await thirdwebDisconnect();
+        try {
+          await thirdwebDisconnect();
+        } catch (thirdwebError) {
+          // Thirdweb disconnect may throw internal errors, but we can continue
+          console.log('Thirdweb disconnect error (continuing anyway):', thirdwebError);
+        }
       }
 
       // Disconnect from Dynamic Labs if connected
@@ -176,7 +181,12 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       // Disconnect from Thirdweb if connected
       if (thirdwebAccount) {
         console.log('Resetting Thirdweb wallet...');
-        await thirdwebDisconnect();
+        try {
+          await thirdwebDisconnect();
+        } catch (thirdwebError) {
+          // Thirdweb disconnect may throw internal errors, but we can continue
+          console.log('Thirdweb disconnect error (continuing anyway):', thirdwebError);
+        }
       }
 
       // Disconnect from Dynamic Labs if connected

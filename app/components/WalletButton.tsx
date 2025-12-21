@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     borderRadius: 16,
     overflow: 'hidden',
+    opacity: 0,
   },
   button: {
     paddingHorizontal: 20,
