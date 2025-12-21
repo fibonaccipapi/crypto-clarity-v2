@@ -10,10 +10,6 @@ import { ThirdwebConnect } from './components/ThirdwebConnect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dailyTermsData from './data/dailyTerms.json';
 
-const LAST_LOGIN_KEY = '@last_login_timestamp';
-const STREAK_KEY = '@login_streak';
-const LAST_TERM_DAY_KEY = '@last_term_day';
-
 const GlassCard = ({ children, style }: any) => {
   return (
     <LinearGradient
@@ -34,14 +30,19 @@ const GlassCard = ({ children, style }: any) => {
 };
 
 export default function HomeScreen() {
-  const { connected, addBalance, justConnected, clearJustConnected } = useWallet();
-  
+  const { connected, addBalance, justConnected, clearJustConnected, address } = useWallet();
+
   const [showDailyLogin, setShowDailyLogin] = useState(false);
   const [streak, setStreak] = useState(1);
   const [cccReward, setCccReward] = useState(5);
   const [dailyTerm, setDailyTerm] = useState(dailyTermsData.terms[0]);
   const refreshTimeoutRef = useRef<any>(null);
   const refreshIntervalRef = useRef<any>(null);
+
+  // Get user-scoped storage keys
+  const getStorageKey = (key: string) => {
+    return address ? `${address}_${key}` : `guest_${key}`;
+  };
 
 
   useEffect(() => {
@@ -95,13 +96,13 @@ export default function HomeScreen() {
     try {
       const now = new Date();
       const currentDay = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
-      const lastTermDay = await AsyncStorage.getItem(LAST_TERM_DAY_KEY);
+      const lastTermDay = await AsyncStorage.getItem(getStorageKey('last_term_day'));
       const lastDay = lastTermDay ? parseInt(lastTermDay) : 0;
-      
+
       if (currentDay !== lastDay) {
-        await AsyncStorage.setItem(LAST_TERM_DAY_KEY, currentDay.toString());
+        await AsyncStorage.setItem(getStorageKey('last_term_day'), currentDay.toString());
       }
-      
+
       const termIndex = currentDay % dailyTermsData.terms.length;
       setDailyTerm(dailyTermsData.terms[termIndex]);
     } catch (error) {
@@ -114,29 +115,29 @@ export default function HomeScreen() {
     try {
       const now = new Date();
       const currentDay = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
-      const lastLoginStr = await AsyncStorage.getItem(LAST_LOGIN_KEY);
+      const lastLoginStr = await AsyncStorage.getItem(getStorageKey('last_login_timestamp'));
       const lastLoginDay = lastLoginStr ? parseInt(lastLoginStr) : 0;
-      
+
       if (currentDay > lastLoginDay) {
-        const storedStreak = await AsyncStorage.getItem(STREAK_KEY);
+        const storedStreak = await AsyncStorage.getItem(getStorageKey('login_streak'));
         let currentStreak = storedStreak ? parseInt(storedStreak) : 0;
-        
+
         if (currentDay === lastLoginDay + 1) {
           currentStreak += 1;
         } else if (currentDay > lastLoginDay + 1) {
           currentStreak = 1;
         }
-        
+
         let reward = 5;
         if (currentStreak === 7) reward += 25;
         if (currentStreak === 30) reward += 100;
-        
+
         setStreak(currentStreak);
         setCccReward(reward);
-        
-        await AsyncStorage.setItem(LAST_LOGIN_KEY, currentDay.toString());
-        await AsyncStorage.setItem(STREAK_KEY, currentStreak.toString());
-        
+
+        await AsyncStorage.setItem(getStorageKey('last_login_timestamp'), currentDay.toString());
+        await AsyncStorage.setItem(getStorageKey('login_streak'), currentStreak.toString());
+
         addBalance(reward);
         setShowDailyLogin(true);
       }

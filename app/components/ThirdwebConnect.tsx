@@ -48,9 +48,9 @@ export function ThirdwebConnect() {
       connectModal={{ showThirdwebBranding: false, size: 'compact' }}
       theme={darkTheme({
         colors: {
-          selectedTextColor: 'hsl(132, 100%, 50%)',
+          selectedTextColor: 'hsl(271, 91%, 65%)',
           selectedTextBg: 'hsl(0, 0%, 0%)',
-          accentText: 'hsl(132, 100%, 50%)',
+          accentText: 'hsl(271, 91%, 65%)',
           separatorLine: 'hsl(321, 100%, 71%)',
           tertiaryBg: 'hsl(0, 0%, 11%)',
           borderColor: 'hsl(321, 100%, 71%)',
@@ -58,11 +58,11 @@ export function ThirdwebConnect() {
           accentButtonText: 'hsl(0, 0%, 100%)',
           primaryButtonBg: 'hsl(271, 91%, 65%)',
           primaryButtonText: 'hsl(0, 0%, 100%)',
-          secondaryButtonHoverBg: 'hsl(132, 100%, 50%)',
-          connectedButtonBg: 'hsl(132, 100%, 50%)',
+          secondaryButtonHoverBg: 'hsl(271, 91%, 65%)',
+          connectedButtonBg: 'hsl(271, 91%, 65%)',
           secondaryIconColor: 'hsl(321, 100%, 71%)',
           secondaryIconHoverColor: 'hsl(271, 91%, 65%)',
-          secondaryIconHoverBg: 'hsl(132, 100%, 50%)',
+          secondaryIconHoverBg: 'hsl(271, 91%, 65%)',
           scrollbarBg: 'hsl(0, 0%, 11%)',
         },
       })}
